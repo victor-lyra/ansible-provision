@@ -1,0 +1,24 @@
+---
+- hosts: localhost
+  tags: sempre
+  connection: local
+  become: true
+
+  # tarefas que devem ser executadas antes de todas as outras, inclusive dos `roles`
+  pre_tasks:
+    - name: antes-de-tudo | Atualiza todos os pacotes (fedora)
+      tags: sempre
+      ansible.builtin.dnf:
+        name: "*"
+        state: latest
+        update_cache: true
+        changed_when: False
+        when: ansible_facts['distribution'] == "Fedora"
+
+  # tarefas que deve ser executadas ao final de todas as demais
+  post_tasks:
+    - name: por-fim | Remove pacotes e dependências instaladas mas desnecessárias (fedora)
+      ansible.builtin.dnf:
+        autoremove: yes
+        changed_when: False
+        when: ansible_facts['distribution'] == "Fedora"

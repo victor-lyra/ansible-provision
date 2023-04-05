@@ -13,3 +13,7 @@
     property: /plugins/plugin-4/miniature-view
     value_type: bool
     value: false
+
+- name: XFCE Panel | restart
+  become_user: victor
+  command: xfce4-panel --restart

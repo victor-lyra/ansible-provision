@@ -14,7 +14,16 @@
     value_type: bool
     value: false
 
+- name: Workspace settings | Botão de aplicações sem título
+  become_user: victor
+  xfconf:
+    channel: xfce4-panel
+    property: /plugins/plugin-1/show-button-tittle
+    value_type: bool
+    value: false
+
 - name: XFCE Panel | restart
+  become: true
   become_user: victor
   command: 
     cmd: xfce4-panel --restart

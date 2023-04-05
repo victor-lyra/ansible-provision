@@ -15,6 +15,9 @@
       # changed_when: False
       when: ansible_facts['distribution'] == "Fedora"
 
+  roles:
+    - gui-de # configuracoes de interface grafica - desktop-environment
+
   # tarefas que deve ser executadas ao final de todas as demais
   post_tasks:
     - name: por-fim | Remove pacotes e dependências instaladas mas desnecessárias (fedora)

@@ -1,0 +1,13 @@
+- name: Workspaces: nomes (4)
+  xfconf:
+    channel: xfwm4
+    property: /general/workspace_names
+    value_type: string
+    value: ['1', '2', '3', '4']
+      
+- name: Workspace settings: formato botões
+  xfconf:
+    channel: xfce4-panel
+    property: /plugins/plugin-4/miniature-view
+    value_type: bool
+    value: false

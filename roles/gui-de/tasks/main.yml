@@ -1,4 +1,5 @@
 - name: Workspace settings | Nomes (4)
+  become_user: victor
   xfconf:
     channel: xfwm4
     property: /general/workspace_names
@@ -6,6 +7,7 @@
     value: ['1', '2', '3', '4']
       
 - name: Workspace settings | Formato botões
+  become_user: victor
   xfconf:
     channel: xfce4-panel
     property: /plugins/plugin-4/miniature-view

@@ -7,6 +7,7 @@
     mode: '0644'
 
 - name: Set panel
+  become: yes
   become_user: victor
   command:
     cmd: xfce4-panel-profiles load /home/victor/.local/share/xfce4-panel-profiles/panel-profile.tar.bz2

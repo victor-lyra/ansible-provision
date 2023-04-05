@@ -4,7 +4,7 @@
     channel: xfwm4
     property: /general/workspace_names
     value_type: string
-    value: ['1', '2', '3', '4']
+    value: ['1a', '2b', '3c', '4d']
       
 - name: Workspace settings | Formato botões
   become_user: victor
@@ -16,4 +16,5 @@
 
 - name: XFCE Panel | restart
   become_user: victor
-  command: xfce4-panel --restart
+  command: 
+    cmd: xfce4-panel --restart

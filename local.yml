@@ -16,7 +16,7 @@
       when: ansible_facts['distribution'] == "Fedora"
 
   roles:
-    - gui-de # configuracoes de interface grafica - desktop-environment
+    - xfce # configuracoes para XFCE4
 
   # tarefas que deve ser executadas ao final de todas as demais
   post_tasks:

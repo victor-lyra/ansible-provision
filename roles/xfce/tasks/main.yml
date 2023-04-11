@@ -1,13 +1,13 @@
-- name: Copy panel configurations
+- name: Copia arquivo de configuracoes do painel
   copy:
     src: panel-profile.tar.bz2
-    dest: /home/victor/.local/share/xfce4-panel-profiles/panel-profile.tar.bz2
-    owner: victor
-    group: victor
+    dest: {{ usuario-home }}.local/share/xfce4-panel-profiles/panel-profile.tar.bz2
+    owner: {{ usuario }}
+    group: {{ usuario }}
     mode: '0644'
 
-- name: Set panel
+- name: Define o painel
   become: yes
-  become_user: victor
+  become_user: {{ usuario }}
   command:
-    cmd: xfce4-panel-profiles load /home/victor/.local/share/xfce4-panel-profiles/panel-profile.tar.bz2
+    cmd: xfce4-panel-profiles load {{ usuario-home }}.local/share/xfce4-panel-profiles/panel-profile.tar.bz2

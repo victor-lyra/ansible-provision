@@ -10,4 +10,4 @@
   become: yes
   become_user: "{{ usuario }}"
   command:
-    cmd: xfce4-panel-profiles load "{{ usuario-home }}".local/share/xfce4-panel-profiles/panel-profile.tar.bz2
+    cmd: xfce4-panel-profiles load "{{ usuario-home }}"/.local/share/xfce4-panel-profiles/panel-profile.tar.bz2

@@ -1,7 +1,7 @@
 - name: Copia arquivo de configuracoes do painel
   copy:
     src: panel-profile.tar.bz2
-    dest: "{{ usuario-home }}".local/share/xfce4-panel-profiles/panel-profile.tar.bz2
+    dest: "{{ usuario-home }}"/.local/share/xfce4-panel-profiles/panel-profile.tar.bz2
     owner: "{{ usuario }}"
     group: "{{ usuario }}"
     mode: "0644"

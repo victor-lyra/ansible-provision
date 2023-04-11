@@ -11,3 +11,17 @@
   become_user: "{{ usuario }}"
   command:
     cmd: xfce4-panel-profiles load "{{ usuario_home }}/.local/share/xfce4-panel-profiles/panel-profile.tar.bz2"
+
+- name: Esconde icones do desktop
+  become: yes
+  become_user: "{{ usuario }}"
+  command:
+    cmd: xfconf-query -c 'xfce4-desktop' -p '/desktop-icons/style' --type 'int' --set '0'
+
+- name: Alteracoes no css do GTK3.0
+  copy:
+    src: gtk.css
+    dest: "{{ usuario_config }}/gtk-3.0/gtk.css"
+    owner: "{{ usuario }}"
+    group: "{{ usuario }}"
+    mode: "0644"

@@ -1,9 +1,9 @@
 ---
 usuario: '{{ lookup("env", "SUDO_USER") }}'
 usuario_home: "/home/{{ usuario }}"
-usuario_config: "{{ usuario-home }}/.config"
+usuario_config: "{{ usuario_home }}/.config"
 super: '{{ lookup("env", "SUDO_USER") }}'
 super_home: '{{ lookup("env", "HOME") }}'
-super_config: "{{ super-home }}/.config"
+super_config: "{{ super_home }}/.config"
 
 

@@ -16,7 +16,7 @@
   become: yes
   become_user: "{{ usuario }}"
   command:
-    cmd: xfconf-query -c 'xfce4-desktop' -p '/desktop-icons/style' --type 'int' --set '0'
+    cmd: xfconf-query -c xfce4-desktop -p /desktop-icons/style --type int --set 0
 
 - name: Alteracoes no css do GTK3.0
   copy:

@@ -1,0 +1,7 @@
+- name: Copia arquivo .XCompose - adiciona cedilha
+  copy:
+    src: .XCompose
+    dest: "{{ usuario_home }}/.XCompose"
+    owner: "{{ usuario }}"
+    group: "{{ usuario }}"
+    mode: "0644"

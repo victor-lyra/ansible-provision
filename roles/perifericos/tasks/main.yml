@@ -14,7 +14,7 @@
 
 - name: Identifica monitor primário
   command: 
-    cmd: xrandr --listactivemonitors | grep \* | awk '{print $4}'
+    cmd: "xrandr --listactivemonitors | grep \* | awk '{print $4}'"
   register: monitor_primario
 
 - name: Identifica monitor secundário (se houver)

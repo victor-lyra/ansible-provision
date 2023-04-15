@@ -1,27 +1,38 @@
-- name: Copia arquivo de configuracoes do painel
-  copy:
-    src: panel-profile.tar.bz2
-    dest: "{{ usuario_home }}/.local/share/xfce4-panel-profiles/panel-profile.tar.bz2"
-    owner: "{{ usuario }}"
-    group: "{{ usuario }}"
-    mode: "0644"
-
-- name: Define o painel
-  become: yes
-  become_user: "{{ usuario }}"
-  command:
-    cmd: xfce4-panel-profiles load "{{ usuario_home }}/.local/share/xfce4-panel-profiles/panel-profile.tar.bz2"
-
-- name: Esconde icones do desktop
+- name: Esconde ícones do desktop
   become: yes
   become_user: "{{ usuario }}"
   command:
     cmd: xfconf-query -c xfce4-desktop -p /desktop-icons/style --type int --set 0
 
-- name: Alteracoes no css do GTK3.0
+- name: Define CSS do GTK3.0
   copy:
     src: gtk.css
     dest: "{{ usuario_config }}/gtk-3.0/gtk.css"
     owner: "{{ usuario }}"
     group: "{{ usuario }}"
     mode: "0644"
+
+- name: Copia *profiles* do 'xfce4-panel'
+  copy:
+    src: '{{item}}'
+    dest: "{{ usuario_home }}/.local/share/xfce4-panel-profiles"
+    owner: "{{ usuario }}"
+    group: "{{ usuario }}"
+    mode: "0644"
+  loop:
+    - panel-profile-solo-monitor.tar.bz2
+    - panel-profile-dual-monitor.tar.bz2
+
+- name: Define o *profile* do 'xfce4-panel' conforme quantitativo de monitores
+  become: yes
+  become_user: "{{ usuario }}"
+  shell: |
+    if xrandr --listactivemonitors | grep -i monitors | awk '{print $2}' > 1; then
+        xfce4-panel-profiles load "{{ usuario_home }}/.local/share/xfce4-panel-profiles/panel-profile-dual-monitor.tar.bz2"
+    else
+        xfce4-panel-profiles load "{{ usuario_home }}/.local/share/xfce4-panel-profiles/panel-profile-solo-monitor.tar.bz2"
+    fi
+  ignore_errors: false
+  register: xfce4_panel_check
+- debug:
+    var: xfce4_panel_check.stdout

@@ -5,3 +5,17 @@
     owner: "{{ usuario }}"
     group: "{{ usuario }}"
     mode: "0644"
+
+- name: Instala pacote xrandr
+  ansible.builtin.dnf:
+    name: xrandr
+    state: latest
+  when: ansible_facts['distribution'] == "Fedora"
+
+- name: Identifica monitor primário
+  command: xrandr --listactivemonitors | grep \* | awk '{print $4}'
+  register: monitor_primario
+
+- name: Identifica monitor secundário (se houver)
+  command: xrandr --listactivemonitors | grep -v \* | awk '{print $4}' | awk NF
+  register: monitor_secundario

@@ -13,11 +13,13 @@
   when: ansible_facts['distribution'] == "Fedora"
 
 - name: Identifica monitor primário
-  command: 
-    cmd: "xrandr --listactivemonitors | grep \* | awk '{print $4}'"
+  shell: xrandr --listactivemonitors | grep \* | awk '{print $4}'
   register: monitor_primario
 
+- debug: msg="{{monitor_primario.stdout}}"
+
 - name: Identifica monitor secundário (se houver)
-  command: 
-    cmd: xrandr --listactivemonitors | grep -v \* | awk '{print $4}' | awk NF
+  shell: xrandr --listactivemonitors | grep -v \* | awk '{print $4}' | awk NF
   register: monitor_secundario
+
+- debug: msg="{{monitor_secundario.stdout}}"

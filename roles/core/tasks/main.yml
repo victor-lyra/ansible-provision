@@ -1,5 +1,5 @@
 - name: Instalação de fontes
-  shell: unzip "{{ item }} -d $(basename {{ item }} .zip)"
+  shell: "unzip {{ item }} -d $(basename {{ item }} .zip)"
   loop: 
     - fonts/NerdFontsSymbolsOnly.zip
     - fonts/BitstreamVeraSansMono.zip

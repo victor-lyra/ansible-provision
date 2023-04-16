@@ -1,0 +1,7 @@
+- name: Instalação de fontes
+  unarchive:
+    src: "{{ item }}"
+    dest: /usr/share/fonts
+    mode: "0644"
+  loop: 
+    - fonts/NerdFontsSymbolsOnly.zip

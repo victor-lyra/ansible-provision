@@ -1,7 +1,17 @@
 - name: Instalação de fontes
-  unarchive:
-    src: "{{ item }}"
-    dest: /usr/share/fonts
-    mode: "0644"
+  shell: unzip "{{ item }} -d $(basename {{ item }} .zip)"
   loop: 
     - fonts/NerdFontsSymbolsOnly.zip
+    - fonts/BitstreamVeraSansMono.zip
+    - fonts/FantasqueSansMono.zip
+    - fonts/FiraCode.zip
+    - fonts/Hack.zip
+    - fonts/IBMPlexMono.zip
+    - fonts/UbuntuMono.zip
+    - fonts/VictorMono.zip
+    - fonts/RobotoMono.zip
+    - fonts/Cousine.zip
+    - fonts/fonts.zip
+    - fonts/JetBrainsMono.zip
+    - fonts/Iosevka.zip
+

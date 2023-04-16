@@ -1,6 +1,8 @@
-- name: Instalação de fontes
-  shell: "unzip {{ item }} -d $(basename {{ item }} .zip)"
-  loop: 
+- name: Copia arquivos de fontes
+  copy:
+    src: "{{ item }}"
+    dest: "{{ usuario_home }}/Downloads/fontes"
+  loop:
     - fonts/NerdFontsSymbolsOnly.zip
     - fonts/BitstreamVeraSansMono.zip
     - fonts/FantasqueSansMono.zip
@@ -14,4 +16,21 @@
     - fonts/fonts.zip
     - fonts/JetBrainsMono.zip
     - fonts/Iosevka.zip
+
+- name: Instalação de fontes
+  shell: "unzip {{ usuario_home }}/Downloads/fontes/{{ item }} -d /usr/share/fonts/$(basename {{ item }} .zip)"
+  loop: 
+    - NerdFontsSymbolsOnly.zip
+    - BitstreamVeraSansMono.zip
+    - FantasqueSansMono.zip
+    - FiraCode.zip
+    - Hack.zip
+    - IBMPlexMono.zip
+    - UbuntuMono.zip
+    - VictorMono.zip
+    - RobotoMono.zip
+    - Cousine.zip
+    - fonts.zip
+    - JetBrainsMono.zip
+    - Iosevka.zip
 

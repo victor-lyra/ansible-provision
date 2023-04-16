@@ -37,7 +37,7 @@
     - JetBrainsMono.zip
     - Iosevka.zip
 
-- name: Copia *wallpapers*
+- name: Copia *wallpapers* (extrai arquivo .zip)
   ansible.builtin.unarchive:
     src: wallpapers/wallpapers.zip
     dest: /comum/wallpapers/

@@ -2,6 +2,9 @@
   copy:
     src: "{{ item }}"
     dest: "{{ usuario_home }}/Downloads/fontes/"
+    owner: "{{ usuario }}"
+    group: "{{ usuario }}"
+    mode: "0644"
   loop:
     - fonts/NerdFontsSymbolsOnly.zip
     - fonts/BitstreamVeraSansMono.zip
@@ -34,3 +37,10 @@
     - JetBrainsMono.zip
     - Iosevka.zip
 
+- name: Copia *wallpapers*
+  ansible.builtin.unarchive:
+    src: wallpapers/wallpapers.zip
+    dest: /comum/wallpapers/
+    owner: "{{ usuario }}"
+    group: "{{ usuario }}"
+    mode: "0644"

@@ -21,7 +21,7 @@
     - fonts/Iosevka.zip
 
 - name: Instalação de fontes
-  shell: "unzip {{ usuario_home }}/Downloads/fontes/{{ item }} -d /usr/share/fonts/$(basename {{ item }} .zip)"
+  shell: "unzip -o {{ usuario_home }}/Downloads/fontes/{{ item }} -d /usr/share/fonts/$(basename {{ item }} .zip)"
   loop: 
     - NerdFontsSymbolsOnly.zip
     - BitstreamVeraSansMono.zip

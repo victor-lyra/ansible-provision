@@ -1,7 +1,7 @@
 - name: Copia arquivos de fontes
   copy:
     src: "{{ item }}"
-    dest: "{{ usuario_home }}/Downloads/fontes"
+    dest: "{{ usuario_home }}/Downloads/fontes/"
   loop:
     - fonts/NerdFontsSymbolsOnly.zip
     - fonts/BitstreamVeraSansMono.zip

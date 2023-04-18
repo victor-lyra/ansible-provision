@@ -1,3 +1,9 @@
+- name: Garante existência do pacote xfconf
+  dnf:
+    name: xfconf
+    state: present
+  when: ansible_facts['distribution'] == "Fedora"
+
 - name: Esconde ícones do desktop
   become: yes
   become_user: "{{ usuario }}"
@@ -6,7 +12,7 @@
 
 - name: Define CSS do GTK3.0
   copy:
-    src: gtk.css
+    src: themes/gtk.css
     dest: "{{ usuario_config }}/gtk-3.0/gtk.css"
     owner: "{{ usuario }}"
     group: "{{ usuario }}"
@@ -22,6 +28,12 @@
   loop:
     - panel-profile-solo-monitor.tar.bz2
     - panel-profile-dual-monitor.tar.bz2
+
+- name: Garante existência do pacote xrandr
+  dnf:
+    name: xrandr
+    state: present
+  when: ansible_facts['distribution'] == "Fedora"
 
 - name: Define o *profile* do 'xfce4-panel' conforme quantitativo de monitores
   become: yes
@@ -45,3 +57,33 @@
     mode: preserve
   with_fileglob:
     - "set-wallpaper/*"
+
+- name: Copia tema para janelas
+  unarchive:
+    src: themes/window/GTK-XFWM-Theme.zip
+    dest: /usr/share/themes/
+
+- name: Define tema para GTK (Appearance)
+  command: "xfconf-query -c xsettings -p /Net/ThemeName -s Everblush"
+
+- name: Define tema para Xfwm (Window Manager)
+  command: "xfconf-query -c xfwm4 -p /general/theme -s Everblush-xfwm"
+
+- name: Copia tema para ícones
+  unarchive:
+    src: themes/icon/Nordzy-cyan-dark-MOD.zip
+    dest: /usr/share/icons/
+
+- name: Define tema dos ícones
+  command: "xfconf-query -c xsettings -p /Net/IconThemeName -s Nordzy-cyan-dark-MOD"
+
+- name: Copia tema para cursor do mouse
+  unarchive:
+    src: themes/cursor/Bibata-Modern-Ice.tar.gz
+    dest: /usr/share/icons/
+
+- name: Define tema do cursor do mouse
+  command: "xfconf-query -c xsettings -p /Gtk/CursorThemeName -s Bibata-Modern-Ice"
+
+
+

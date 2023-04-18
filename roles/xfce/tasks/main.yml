@@ -93,5 +93,10 @@
   become_user: "{{ usuario }}"
   command: "xfconf-query -c xsettings -p /Gtk/CursorThemeName -s Bibata-Modern-Ice"
 
+- name: Define tema do cursor do mouse (default)
+  lineinfile: 
+    path: /usr/share/icons/default/index.theme
+    search_string: 'Inherits='
+    line: Inherits=Bibata-Modern-Ice
 
 

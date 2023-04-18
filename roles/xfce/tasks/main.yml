@@ -99,4 +99,11 @@
     search_string: 'Inherits='
     line: Inherits=Bibata-Modern-Ice
 
+- name: Configurações personalizadas para o xfce4-terminal
+  become: yes
+  become_user: "{{ usuario }}"
+  copy:
+    src: terminal/terminalrc
+    dst: "{{ usuario_config }}/xfce4/terminal/terminalrc"
+    mode: "0644"
 

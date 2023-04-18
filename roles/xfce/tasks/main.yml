@@ -40,7 +40,7 @@
 - name: Script para definição de *wallpapers*
   copy:
     src: "{{ item }}"
-    dest: "{{ usuario_config }}"/autostart/"
+    dest: "{{ usuario_config }}/autostart/"
     owner: "{{ usuario }}"
     mode: preserve
   with_fileglob:

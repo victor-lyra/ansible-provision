@@ -104,6 +104,6 @@
   become_user: "{{ usuario }}"
   copy:
     src: terminal/terminalrc
-    dst: "{{ usuario_config }}/xfce4/terminal/terminalrc"
+    dest: "{{ usuario_config }}/xfce4/terminal/terminalrc"
     mode: "0644"
 

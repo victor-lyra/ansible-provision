@@ -64,9 +64,13 @@
     dest: /usr/share/themes/
 
 - name: Define tema para GTK (Appearance)
+  become: yes
+  become_user: "{{ usuario }}"
   command: "xfconf-query -c xsettings -p /Net/ThemeName -s Everblush"
 
 - name: Define tema para Xfwm (Window Manager)
+  become: yes
+  become_user: "{{ usuario }}"
   command: "xfconf-query -c xfwm4 -p /general/theme -s Everblush-xfwm"
 
 - name: Copia tema para ícones
@@ -75,6 +79,8 @@
     dest: /usr/share/icons/
 
 - name: Define tema dos ícones
+  become: yes
+  become_user: "{{ usuario }}"
   command: "xfconf-query -c xsettings -p /Net/IconThemeName -s Nordzy-cyan-dark-MOD"
 
 - name: Copia tema para cursor do mouse
@@ -83,6 +89,8 @@
     dest: /usr/share/icons/
 
 - name: Define tema do cursor do mouse
+  become: yes
+  become_user: "{{ usuario }}"
   command: "xfconf-query -c xsettings -p /Gtk/CursorThemeName -s Bibata-Modern-Ice"
 
 

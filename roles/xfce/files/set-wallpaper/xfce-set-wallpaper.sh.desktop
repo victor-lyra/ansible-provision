@@ -1,0 +1,4 @@
+[Desktop Entry]
+Type=Application
+Name=Set Wallpaper Script
+Exec=/home/victor/.config/autostart/xfce-set-wallpaper.sh

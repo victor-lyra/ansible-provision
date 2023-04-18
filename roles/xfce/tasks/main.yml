@@ -36,3 +36,12 @@
   register: xfce4_panel_check
 - debug:
     var: xfce4_panel_check.stdout
+
+- name: Script para definição de *wallpapers*
+  copy:
+    src: "{{ item }}"
+    dest: "{{ usuario_config }}"/autostart/"
+    owner: "{{ usuario }}"
+    mode: preserve
+  with_fileglob:
+    - "set-wallpaper/*"

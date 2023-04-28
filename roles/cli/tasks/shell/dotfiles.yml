@@ -1,0 +1,17 @@
+- name: Copia aliases, bashrc, zshrc, dircolors
+  copy:
+    src: "{{ item }}"
+    dest: "{{ usuario_home }}"
+    owner: "{{ usuario }}"
+    group: "{{ usuario }}"
+    mode: preserve
+  with_fileglob:
+    - "shell/.*"
+    
+- name: Copia starship.toml
+  copy:
+    src: starship.toml
+    dest: "{{ usuario_config }}"
+    owner: "{{ usuario }}"
+    group: "{{ usuario }}"
+    mode: preserve

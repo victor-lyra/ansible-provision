@@ -1,0 +1,11 @@
+command_timeout = 5000
+
+[character]
+success_symbol = "[ᶑ](bold green) "
+error_symbol = "[ᶑ](bold red) "
+
+[shell]
+bash_indicator = "ɓ"
+zsh_indicator = "ƺ"
+fish_indicator = "ʄ"
+disabled = false

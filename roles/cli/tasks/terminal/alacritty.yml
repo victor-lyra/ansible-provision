@@ -1,0 +1,12 @@
+- name: Instala emulador de terminal Alacritty
+  ansible.builtin.dnf:
+    name:
+      - alacritty
+      
+- name: Alacritty | arquivos de configuração
+  copy:
+    src: alacritty
+    dest: "{{ usuario_config }}/"
+    owner: "{{ usuario }}"
+    group: "{{ usuario }}"
+    mode: preserve

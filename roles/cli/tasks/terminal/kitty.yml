@@ -1,0 +1,46 @@
+#https://sw.kovidgoyal.net/kitty/binary/
+- name: Baixa e instala kitty da página do desenvolvedor
+  ansible.builtin.shell: curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin launch=n
+  # os binários serão copiados para ~/.local/kitty.app  
+
+- name: Verifica a existência de *symlink* para kitty em ~/.local/bin
+  stat:
+    path: "{{ usuario_home }}/.local/bin/kitty"
+  register: kitty_symlink
+
+- name: Cria symlinks para os binários kitty e kitten
+  command: ln -sf /home/$SUDO_USER/.local/kitty.app/bin/kitty /home/$SUDO_USER/.local/kitty.app/bin/kitten /home/$SUDO_USER/.local/bin/
+  when: kitty_symlink.stat.exists == False
+
+- name: Verifica a existência do "kitty.desktop"
+  stat:
+    path: "{{ usuario_home }}/.local/share/applications/kitty.desktop"
+  register: kitty_desktop
+
+- name: Cria kitty.desktop
+  command: cp /home/$SUDO_USER/.local/kitty.app/share/applications/kitty.desktop /home/$SUDO_USER/.local/share/applications/
+  when: kitty_desktop.stat.exists == False
+  
+- name: Verifica a existência do ".config" para kitty
+  stat:
+    path: "{{ usuario_config }}/kitty/"
+  register: kitty_config
+  
+- name: Cria ~/.config/kitty se necessário
+  file:
+    path: "{{ usuario_config }}/kitty/"
+    state: direcrtory
+    mode: '0755'
+  when: kitty_config.stat.exists == False
+
+- name: Verifica a existência do arquivo de configurações personalizadas
+  stat:
+    path: "{{ usuario_config }}/kitty/lyra.gruvbox.conf"
+  register: kitty_lyra
+
+- name : Copia configurações personalizadas
+  copy:
+    src: kitty/lyra.gruvbox.conf
+    dest: "{{ usuario_config }}/kitty/"
+  when: kitty_lyra.stat.exists == False
+

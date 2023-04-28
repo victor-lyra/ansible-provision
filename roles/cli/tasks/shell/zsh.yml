@@ -1,0 +1,20 @@
+- name: Zsh | Instala Zsh
+  ansible.builtin.dnf:
+    name:
+      - zsh
+      - zsh-autosuggestions
+      - zsh-syntax-highlighting
+    state: latest
+  when: ansible_facts['distribution'] == "Fedora"
+  
+- name: Zsh | Plugin extra - sudo.plugin.zsh
+  copy:
+    src: sudo.plugin.zsh
+    dest: /usr/share/zsh-sudo/ # path is created by the module
+    mode: "0644"
+    
+- name: Zsh | Define zsh como shell padrão
+  shell: "{{ item }}"
+  loop: 
+    - "chsh {{ usuario }} -s /usr/bin/zsh" 
+    - chsh root -s /usr/bin/zsh

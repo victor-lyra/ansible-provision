@@ -1,0 +1,113 @@
+- name: Adiciona repositório RPM Fusion
+  ansible.builtin.dnf:
+    name: "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-stable.noarch.rpm"
+    state: present
+  when: ansible_facts['distribution'] == "Fedora"
+  
+- name: Verifica existência do caminho /home/usuario/.local/bin
+  stat:
+    path: "{{ usuario_home }}/.local/bin/"
+  register: local_bin
+
+- name: Cria /home/usuario/.local/bin caso não exista
+  file:
+    path: "{{ usuario_home }}/.local/bin/"
+    state: directory
+    mode: 0755
+    group: "{{ usuario }}"
+    owner: "{{ usuario }}"
+  when: local_bin.stat.exists == false
+  
+- name: Instala última versão de vários programas de linha de comando
+  ansible.builtin.dnf:
+    name:
+      # rust
+      - cargo
+      
+      # optional dependencies to ranger
+      - caca-utils
+      - imagemagick
+      - ffmpeg
+      # - mediainfo             # file metadata
+      - perl-Image-ExifTool     # file metadata
+      - lynx
+      
+      # better options 
+      - bat             # better cat (https://github.com/sharkdp/bat)
+      - fd-find         # better find (https://github.com/sharkdp/fd)
+      - fzf             # fuzzy finder (https://github.com/junegunn/fzf)
+      - xclip           # cli clipboard (https://github.com/astrand/xclip)
+      - copyq           # clipboard manager (https://github.com/hluk/CopyQ)
+      - exa             # better ls (https://github.com/ogham/exa)
+      - ripgrep         # better grep (https://github.com/BurntSushi/ripgrep)
+      - ranger          # console file manager (https://github.com/ranger/ranger)
+      - htop
+      - glances         # another monitoring tool (https://github.com/nicolargo/glances)
+      
+      # network
+      - nmap            # scanning
+      - nmap-ncat       # read/write data across connections
+      - bmon            # bandwidth monitor (https://github.com/tgraf/bmon)
+      - NetworkManager-tui #terminal user interface
+      - sipcalc         # subnet calculator
+      - netmask         # network masks
+      
+      # mix
+      - xdotool         # simulates key presses and clicks (https://github.com/jordansissel/xdotool)
+      - python3-pip     # python package manager
+      - xinput          # query X input devices
+      - keychain        # agent manager for SSH/GnuPG
+      - rclone          # rsync for cloud storage
+      - gh              # Github's cli
+      - gpg             # GnuPG
+      - qrenconde       # generate qrcode
+      - lshw            # list hardware
+      - fastfetch       # system info tool
+      
+      # cockpit
+      - cockpit            # web console
+      - cockpit-machines   # user interface for vms
+      - cockpit-navigator  # file system browser for cockpit
+      - cokpit-pcp         # Performance Co-Pilot framework to gather metrics data about the system      
+    state: latest
+  when: ansible_facts['distribution'] == "Fedora"
+
+# shell
+
+- include_tasks: shell/zsh.yml
+- include_tasks: shell/starship.yml
+- include_tasks: shell/dotfiles.yml
+
+# terminal
+
+- include_tasks: terminal/alacritty.yml
+- include_tasks: terminal/kitty.yml
+
+# scripts
+
+- name: Ipcalc (script perl )com cálculo VLSM
+# https://jodies.de/ipcalc-archive/ipcalc-0.41/ipcalc
+  copy:
+    src: ipcalc
+    dest: "{{ usuario_home }}/.local/bin/ipcalc"
+    owner: "{{ usuario }}"
+    group: "{{ usuario }}"
+    mode: preserve
+    
+# https://github.com/chubin/cheat.sh
+- name: Cheat.sh | copia script
+  copy:
+    src: cheat.sh/cht
+    dest: "{{ usuario_home }}/.local/bin/cht"
+    owner: "{{ usuario }}"
+    group: "{{ usuario }}"
+    mode: preserve    
+
+# package group  
+ 
+# https://www.youtube.com/watch?v=HfNKpT2jo7U / https://www.youtube.com/watch?v=BgZHbCDFODk
+- name: Instala o grupo de pacotes 'Virtualization' (libvirt, qemu, virt-manager) 
+  ansible.builtin.dnf:
+    name: '@virtualization'
+    state: present
+    

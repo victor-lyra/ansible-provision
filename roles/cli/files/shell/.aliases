@@ -1,0 +1,171 @@
+## editor
+alias v='nvim'
+alias vi='nvim'
+alias vim='nvim'
+
+## flags no "ls"
+#alias ls='ls --color=auto'
+#alias ll='ls -alhF'
+#alias la='ls -A'
+#alias l='ls -CF'
+
+## "ls" para "exa"
+alias l='exa -al --color=always --group-directories-first --octal-permissions' # all, long 
+alias la='exa -a --color=always --group-directories-first' # all
+alias ll='exa -l --color=always --group-directories-first' # long
+alias lt='exa -aT --color=always --group-directories-first' # all, tree
+alias l.='exa -a | egrep "^\."' # only hidden ones
+alias ld='exa -alD --octal-permissions'
+
+## atalho no "cd"
+alias cd..='cd ..'
+alias ..='cd ..'
+alias 2..='cd ../..'
+alias 3..='cd ../../..'
+
+## colorindo 
+alias grep='grep --color=auto'
+alias egrep='egrep --color=auto'
+alias fgrep='fgrep --color=auto'
+#alias pacman='pacman --color=auto'
+
+## confirma antes de sobrescrever
+alias cp="cp -i"
+alias mv='mv -i'
+alias rm='rm -i'
+
+## flags alternativas
+alias df='df -hT'
+alias free='free -m'
+alias ip='ip -c'
+alias nnn='nnn -deoH'
+alias fd='fd -HI'
+#alias yay='yay --bottomup'
+#alias paru='paru --bottomup'
+
+## ps
+alias psa="ps auxf"
+alias psgrep="ps aux | grep -v grep | grep -i -e VSZ -e"
+
+## processos consumindo memoria
+alias psmem='ps axo user,pid,pcpu,pmem,stat,tty,start,time,comm --sort=-pmem'
+alias psmem10='ps axo user,pid,pcpu,pmem,stat,tty,start,time,comm --sort=-pmem | head'
+
+## processos consumindo cpu
+alias pscpu='ps axo user,pid,pcpu,pmem,stat,tty,start,time,comm --sort=-pcpu'
+alias pscpu10='ps axo user,pid,pcpu,pmem,stat,tty,start,time,comm --sort=-pcpu | head'
+
+## novas fontes
+alias update-fc='sudo fc-cache -fv'
+
+## dotfiles bare repo
+alias fedfiles='/usr/bin/git --git-dir=$HOME/fedfiles/ --work-tree=$HOME'
+
+## repositorios mais rapidos
+#alias mirror="sudo reflector --connection-timeout 20 --download-timeout 60 --age 6 --latest 20  --fastest 20 --threads 20 --sort rate --protocol https --save /etc/pacman.d/mirrorlist"
+
+## mix
+alias path='echo -e ${PATH//:/\\n}'
+alias hora='date +"%T"'
+alias data='date +"%d-%m-%Y"'
+alias cht='cht.sh'
+alias f='. ranger' # current directory changes by ranger selection
+alias sudo='sudo ' # make sudo understand my aliases
+alias wall='feh --no-fehbg --bg-fill `find /comum/wallpapers -type f | shuf -n1`'
+
+## pacman / AUR helpers
+#alias pacsyu='sudo pacman -Syyu'                 # update only standard pkgs
+#alias yaysua='yay -Sua'                          # update only AUR pkgs (yay)
+#alias yaysyu='yay -Syu'                          # update standard pkgs and AUR pkgs (yay)
+#alias parsua='paru -Sua'                         # update only AUR pkgs (paru)
+#alias parsyu='paru -Syu'                         # update standard pkgs and AUR pkgs (paru)
+#alias unlock='sudo rm /var/lib/pacman/db.lck'    # remove pacman lock
+#alias cleanup='sudo pacman -Rns (pacman -Qtdq)'  # remove orphaned packages
+
+## pacotes instalados recentemente
+#alias lspac="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -50 | nl"
+#alias lsallpac="expac --timefmt='%Y-%m-%d %T' -H M '%m\t%l\t%n %v' | sort -h | nl"
+
+## editar arquivos de configurcao importantes
+#alias vipacman="sudo $EDITOR /etc/pacman.conf"
+#alias vinmirror="sudo $EDITOR /etc/pacman.d/mirrorlist"
+#alias visddm="sudo $EDITOR /etc/sddm.conf"
+alias vifstab="sudo $EDITOR /etc/fstab"
+alias vibash="$EDITOR ~/.bashrc"
+alias vizsh="$EDITOR ~/.zshrc"
+alias vialias="$EDITOR ~/.aliases"
+
+## descompactar
+# usage: ex <file>
+ex ()
+{
+  if [ -f $1 ] ; then
+    case $1 in
+      *.tar.bz2)   tar xjf $1   ;;
+      *.tar.gz)    tar xzf $1   ;;
+      *.bz2)       bunzip2 $1   ;;
+      *.rar)       unrar x $1   ;;
+      *.gz)        gunzip $1    ;;
+      *.tar)       tar xf $1    ;;
+      *.tbz2)      tar xjf $1   ;;
+      *.tgz)       tar xzf $1   ;;
+      *.zip)       unzip $1     ;;
+      *.Z)         uncompress $1;;
+      *.7z)        7z x $1      ;;
+      *.deb)       ar x $1      ;;
+      *.tar.xz)    tar xf $1    ;;
+      *.tar.zst)   unzstd $1    ;;
+      *)           echo "'$1' cannot be extracted via ex()" ;;
+    esac
+  else
+    echo "'$1' is not a valid file"
+  fi
+}
+
+## transfer.sh - transfer files
+# usage: transfer <file | directory>
+# +examples: https://transfer.sh
+transfer()
+{ 
+  if [ $# -eq 0 ];then 
+    echo "No arguments specified.\nUsage:\n transfer <file|directory>\n ... | transfer <file_name>">&2;
+    return 1;
+  fi;
+  if tty -s;then 
+    file="$1";
+    file_name=$(basename "$file");
+    if [ ! -e "$file" ];then 
+      echo "$file: No such file or directory">&2;
+      return 1;
+    fi;
+    if [ -d "$file" ];then 
+      file_name="$file_name.zip" ,;
+      (cd "$file"&&zip -r -q - .)|curl --progress-bar --upload-file "-" "https://transfer.sh/$file_name"|tee /dev/null,;
+    else 
+      cat "$file"|curl --progress-bar --upload-file "-" "https://transfer.sh/$file_name"|tee /dev/null;
+    fi;
+  else 
+    file_name=$1;
+    curl --progress-bar --upload-file "-" "https://transfer.sh/$file_name"|tee /dev/null;
+  fi;
+}
+
+## share code
+# termbin.com
+alias tb='nc termbin.com 9999'
+# github gist
+alias gist='gh gist create'
+alias gistp='gh gist create --public'
+
+## virtual drives
+alias vd-box='rclone --vfs-cache-mode writes mount box: /home/victor/virtual-drive/box --log-file=/home/victor/.config/rclone/rclone.log --cache-dir /home/victor/virtual-drive/box-cache --daemon && cd /home/victor/virtual-drive/box'
+alias vd-dropbox='rclone --vfs-cache-mode writes mount dropbox: /home/victor/virtual-drive/dropbox --log-file=/home/victor/.config/rclone/rclone.log --cache-dir /home/victor/virtual-drive/dropbox-cache --daemon && cd /home/victor/virtual-drive/dropbox'
+alias vd-google-drive='rclone --vfs-cache-mode writes mount google-drive: /home/victor/virtual-drive/google-drive --log-file=/home/victor/.config/rclone/rclone.log --cache-dir /home/victor/virtual-drive/google-drive-cache --daemon && cd /home/victor/virtual-drive/google-drive'
+alias vd-mega='rclone --vfs-cache-mode writes mount mega: /home/victor/virtual-drive/mega --log-file=/home/victor/.config/rclone/rclone.log --cache-dir /home/victor/virtual-drive/mega-cache --daemon && cd /home/victor/virtual-drive/mega'
+alias vd-nextcloud='rclone --vfs-cache-mode writes mount nextcloud: /home/victor/virtual-drive/nextcloud --log-file=/home/victor/.config/rclone/rclone.log --cache-dir /home/victor/virtual-drive/nextcloud-cache --daemon && cd /home/victor/virtual-drive/nextcloud'
+alias vd-onedrive='rclone --vfs-cache-mode writes mount onedrive: /home/victor/virtual-drive/onedrive --log-file=/home/victor/.config/rclone/rclone.log --cache-dir /home/victor/virtual-drive/onedrive-cache --daemon && cd /home/victor/virtual-drive/onedrive'
+alias vd-ora-cloud='rclone --vfs-cache-mode writes mount ora-cloud:/ora-bucket /home/victor/virtual-drive/ora-cloud --log-file=/home/victor/.config/rclone/rclone.log --cache-dir /home/victor/virtual-drive/ora-cloud-cache --daemon && cd /home/victor/virtual-drive/ora-cloud'
+
+## password
+# lesspass
+alias pass=".local/bin/lesspass -c"

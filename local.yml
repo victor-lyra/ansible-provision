@@ -16,9 +16,10 @@
       when: ansible_facts['distribution'] == "Fedora"
 
   roles:
-    - core		# itens basicos para demais roles: wallpaper, fontes...
-    - perifericos 	# configuracoes de teclado, monitor
-    - xfce 		# configuracoes para XFCE4
+    - cli               # em geral, programas de linha de comando
+#    - core              # itens basicos para demais roles (wallpaper, fontes...)
+#    - perifericos       # configuracoes de teclado, monitor
+#    - xfce              # configuracoes para XFCE4
 
   # tarefas que deve ser executadas ao final de todas as demais
   post_tasks:

@@ -32,7 +32,7 @@
       
       # optional dependencies to ranger
       - caca-utils
-      - imagemagick
+      - ImageMagick
       - ffmpeg
       # - mediainfo             # file metadata
       - perl-Image-ExifTool     # file metadata
@@ -66,7 +66,7 @@
       - rclone          # rsync for cloud storage
       - gh              # Github's cli
       - gpg             # GnuPG
-      - qrenconde       # generate qrcode
+      - qrencode        # generate qrcode
       - lshw            # list hardware
       - fastfetch       # system info tool
       
@@ -74,7 +74,7 @@
       - cockpit            # web console
       - cockpit-machines   # user interface for vms
       - cockpit-navigator  # file system browser for cockpit
-      - cokpit-pcp         # Performance Co-Pilot framework to gather metrics data about the system      
+      - cockpit-pcp         # Performance Co-Pilot framework to gather metrics data about the system      
     state: latest
   when: ansible_facts['distribution'] == "Fedora"
 

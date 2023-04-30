@@ -28,15 +28,16 @@
   ansible.builtin.dnf:
     name:
       # rust
-      - cargo
+      - cargo           # Rust's package manager and build tool
+      - cmake           # control software compilation process
       
       # optional dependencies to ranger
-      - caca-utils
-      - ImageMagick
-      - ffmpeg
+      - caca-utils      # simple image viewer for the terminal
+      - ImageMagick     # image display and manipulation tool for the X Window System
+      - ffmpeg          # audio and video streaming
       # - mediainfo             # file metadata
       - perl-Image-ExifTool     # file metadata
-      - lynx
+      - lynx            # text-based Web browser
       
       # better options 
       - bat             # better cat (https://github.com/sharkdp/bat)
@@ -57,6 +58,7 @@
       - NetworkManager-tui #terminal user interface
       - sipcalc         # subnet calculator
       - netmask         # network masks
+      - mtr             # combines the functionality of the 'traceroute' and 'ping'
       
       # mix
       - xdotool         # simulates key presses and clicks (https://github.com/jordansissel/xdotool)
@@ -74,7 +76,7 @@
       - cockpit            # web console
       - cockpit-machines   # user interface for vms
       - cockpit-navigator  # file system browser for cockpit
-      - cockpit-pcp         # Performance Co-Pilot framework to gather metrics data about the system      
+      - cockpit-pcp        # Performance Co-Pilot framework to gather metrics data about the system      
     state: latest
   when: ansible_facts['distribution'] == "Fedora"
 

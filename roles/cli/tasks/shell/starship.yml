@@ -1,4 +1,5 @@
 # Manage rust packages with cargo - community.general.cargo module 
 - name: Instala Starship
   community.general.cargo:
-    name: cargo install starship --locked
+    name: starship
+    locked: yes

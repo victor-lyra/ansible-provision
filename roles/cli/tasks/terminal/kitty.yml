@@ -1,5 +1,7 @@
 #https://sw.kovidgoyal.net/kitty/binary/
 - name: Baixa e instala kitty da página do desenvolvedor
+  become: yes
+  become_user: "{{ usuario }}"
   ansible.builtin.shell: curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin launch=n
   # os binários serão copiados para ~/.local/kitty.app  
 

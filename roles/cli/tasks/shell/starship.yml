@@ -2,4 +2,3 @@
 - name: Instala Starship
   community.general.cargo:
     name: starship
-    locked: yes

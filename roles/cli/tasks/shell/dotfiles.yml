@@ -10,7 +10,7 @@
     
 - name: Copia starship.toml
   copy:
-    src: starship.toml
+    src: shell/starship.toml
     dest: "{{ usuario_config }}"
     owner: "{{ usuario }}"
     group: "{{ usuario }}"

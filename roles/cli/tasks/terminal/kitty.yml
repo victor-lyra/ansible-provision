@@ -20,7 +20,7 @@
   register: kitty_desktop
 
 - name: Cria kitty.desktop
-  command: cp /home/$SUDO_USER/.local/kitty.app/share/applications/kitty.desktop /home/$SUDO_USER/.local/share/applications/
+  command: cp /home/$SUDO_USER/.local/kitty.app/share/applications/kitty.desktop /home/$SUDO_USER/.local/share/applications/kitty.desktop
   when: kitty_desktop.stat.exists == False
   
 - name: Verifica a existência do ".config" para kitty

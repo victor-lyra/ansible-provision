@@ -29,7 +29,7 @@
   become_user: "{{ usuario }}"
   ansible.builtin.get_url:
     url: "{{ item }}"
-    dest: "{{ usuario_home }}/.fzf/shell/{{ item }}"
+    dest: "{{ usuario_home }}/.fzf/shell/{{ basename }}"
   loop:
     - https://github.com/junegunn/fzf/blob/master/shell/completion.bash
     - https://github.com/junegunn/fzf/blob/master/shell/completion.zsh

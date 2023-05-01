@@ -5,4 +5,4 @@
 
 - name: Instala 'starship' com 'cargo'
   command: cargo install starship --locked
-  when: not starship_installed.stdout is search("starship")
+  when: starship_installed.stdout is search("starship")

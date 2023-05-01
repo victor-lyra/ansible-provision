@@ -31,7 +31,7 @@
     url: "{{ item.link }}"
     dest: "{{ usuario_home }}/.fzf/shell/{{ item.file }}"
   loop:
-    - { link: 'https://github.com/junegunn/fzf/blob/master/shell/completion.bash', file: 'completion.bash' }
-    - { link: 'https://github.com/junegunn/fzf/blob/master/shell/completion.zsh', file: 'completion.zsh' }
-    - { link: 'https://github.com/junegunn/fzf/blob/master/shell/key-bindings.bash', file: 'key-bindings.bash' }
-    - { link: 'https://github.com/junegunn/fzf/blob/master/shell/key-bindings.zsh', file: 'key-bindings.zsh' }
+    - { link: 'https://github.com/junegunn/fzf/raw/master/shell/completion.bash', file: 'completion.bash' }
+    - { link: 'https://github.com/junegunn/fzf/raw/master/shell/completion.zsh', file: 'completion.zsh' }
+    - { link: 'https://github.com/junegunn/fzf/raw/master/shell/key-bindings.bash', file: 'key-bindings.bash' }
+    - { link: 'https://github.com/junegunn/fzf/raw/master/shell/key-bindings.zsh', file: 'key-bindings.zsh' }

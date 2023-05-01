@@ -1,3 +1,30 @@
-# Manage rust packages with cargo - community.general.cargo module 
-- name: Instala 'starship' com 'cargo'
-  command: cargo install starship --locked
+- name: Verifica se download do 'starship' já foi realizado
+  stat:
+    path: "{{ usuario_home }}/Downloads/{{ item }}"
+  with_fileglob:
+    - "starship*.tar.gz"
+  register: starship_download
+
+- name: Download de binário pré-compilado
+  become: yes
+  become_user: "{{ usuario }}"
+  ansible.builtin.shell: |
+    curl -s https://api.github.com/repos/starship/starship/releases/latest \
+      | grep browser_download_url \
+      | grep x86_64-unknown-linux-gnu \
+      | cut -d '"' -f 4 \
+      | wget -P ~/Downloads -qi -
+  when: starship_download.stat.exists == False
+  
+- name: Verifica se 'starship' já está instalado
+  stat:
+    path: "/usr/local/bin/starship"
+  register: starship_instalado
+  
+- name: Descompacta 'starship'
+  ansible.builtin.unarchive:
+    src: "{{ usuario_home }}/Downloads/{{ item }}"
+    dest: /usr/local/bin
+  with_fileglob:
+    - "starship*.tar.gz"
+  when: starship_instalador.stat.exists == False

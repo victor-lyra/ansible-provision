@@ -14,6 +14,14 @@
   command: ln -sf /home/$SUDO_USER/.local/kitty.app/bin/kitty /home/$SUDO_USER/.local/kitty.app/bin/kitten /home/$SUDO_USER/.local/bin/
   when: kitty_symlink.stat.exists == False
 
+- name: Cria diretório para aplicações
+  file:
+    path: "{{ usuario_home }}/.local/share/applications"
+    state: directory
+    owner: "{{ usuario }}" 
+    group: "{{ usuario }}"
+    mode: 0775
+
 - name: Verifica a existência do "kitty.desktop"
   stat:
     path: "{{ usuario_home }}/.local/share/applications/kitty.desktop"

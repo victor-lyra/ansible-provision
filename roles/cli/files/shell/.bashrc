@@ -10,6 +10,11 @@ if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]]
 then
     PATH="$HOME/.local/bin:$HOME/bin:$PATH"
 fi
+
+# Cargo environment
+if [ -d ~/.cargo/bin ]; then
+   PATH="$HOME/.cargo/bin:$PATH"
+fi
 export PATH
 
 # Uncomment the following line if you don't like systemctl's auto-paging feature:
@@ -39,6 +44,6 @@ shopt -s checkwinsize # checks term size when bash regains control
 bind "set completion-ignore-case on"
 
 [[ -f ~/.aliases ]] && . ~/.aliases
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+[[ -f ~/.fzf.bash ]] && source ~/.fzf.bash
 
 eval "$(starship init bash)"

@@ -20,6 +20,11 @@
     - fonts/JetBrainsMono.zip
     - fonts/Iosevka.zip
 
+- name: Verifica existência de arquivos de fonte instalada
+  stat:
+    path: "/usr/share/fonts/Iosevka/"
+  register: iosevka_present  
+
 - name: Instalação de fontes
   shell: "unzip -o {{ usuario_home }}/Downloads/fontes/{{ item }} -d /usr/share/fonts/$(basename {{ item }} .zip)"
   loop: 
@@ -36,6 +41,7 @@
     - fonts.zip
     - JetBrainsMono.zip
     - Iosevka.zip
+  when: iosevka_present.stat.exists == false
 
 - name: Verifica caminho - /comum/wallpapers
   stat:

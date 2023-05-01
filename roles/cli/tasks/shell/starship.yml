@@ -25,4 +25,4 @@
     dest: /usr/local/bin
   with_fileglob:
     - "{{ usuario_home }}/Downloads/starship*.tar.gz"
-  when: starship_instalador.stat.exists == False
+  when: starship_instalado.stat.exists == False

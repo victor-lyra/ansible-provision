@@ -28,10 +28,10 @@
   become: yes
   become_user: "{{ usuario }}"
   ansible.builtin.get_url:
-    url: "{{ item }}"
-    dest: "{{ usuario_home }}/.fzf/shell/{{ basename }}"
+    url: "{{ item.link }}"
+    dest: "{{ usuario_home }}/.fzf/shell/{{ item.file }}"
   loop:
-    - https://github.com/junegunn/fzf/blob/master/shell/completion.bash
-    - https://github.com/junegunn/fzf/blob/master/shell/completion.zsh
-    - https://github.com/junegunn/fzf/blob/master/shell/key-bindings.bash
-    - https://github.com/junegunn/fzf/blob/master/shell/key-bindings.zsh
+    - { link: 'https://github.com/junegunn/fzf/blob/master/shell/completion.bash', file: 'completion.bash' }
+    - { link: 'https://github.com/junegunn/fzf/blob/master/shell/completion.zsh', file: 'completion.zsh' }
+    - { link: 'https://github.com/junegunn/fzf/blob/master/shell/key-bindings.bash', file: 'key-bindings.bash' }
+    - { link: 'https://github.com/junegunn/fzf/blob/master/shell/key-bindings.zsh', file: 'key-bindings.zsh' }

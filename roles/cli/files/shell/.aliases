@@ -68,7 +68,7 @@ alias fedfiles='/usr/bin/git --git-dir=$HOME/fedfiles/ --work-tree=$HOME'
 alias path='echo -e ${PATH//:/\\n}'
 alias hora='date +"%T"'
 alias data='date +"%d-%m-%Y"'
-alias cht='cht.sh'
+#alias cht='cht.sh'
 alias f='. ranger' # current directory changes by ranger selection
 alias sudo='sudo ' # make sudo understand my aliases
 alias wall='feh --no-fehbg --bg-fill `find /comum/wallpapers -type f | shuf -n1`'

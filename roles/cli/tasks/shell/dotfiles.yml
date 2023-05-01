@@ -1,11 +1,11 @@
-- name: Copia aliases, bashrc, zshrc, dircolors
+- name: Copia aliases, bashrc, zshrc, dircolors, fzf config
   copy:
     src: "{{ item }}"
     dest: "{{ usuario_home }}"
     owner: "{{ usuario }}"
     group: "{{ usuario }}"
     mode: preserve
-  with_fileglob:
+  with_fileglob:  
     - "shell/.*"
     
 - name: Copia starship.toml
@@ -15,3 +15,23 @@
     owner: "{{ usuario }}"
     group: "{{ usuario }}"
     mode: preserve
+    
+- name: Cria diretório para configurações do fzf
+  file:
+    path: "{{ usuario_home }}/.fzf/shell"
+    state: directory
+    owner: "{{ usuario }}" 
+    group: "{{ usuario }}"
+    mode: 0775
+
+- name: Download bash/zsh completion e key-bindings para fzf
+  become: yes
+  become_user: {{ usuario }}
+  ansible.builtin.get_url:
+    url: "{{ item }}"
+    dest: "{{ usuario_home }}/.fzf/shell/{{ item }}"
+  loop:
+    - https://github.com/junegunn/fzf/blob/master/shell/completion.bash
+    - https://github.com/junegunn/fzf/blob/master/shell/completion.zsh
+    - https://github.com/junegunn/fzf/blob/master/shell/key-bindings.bash
+    - https://github.com/junegunn/fzf/blob/master/shell/key-bindings.zsh

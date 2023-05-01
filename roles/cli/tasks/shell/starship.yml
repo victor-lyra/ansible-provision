@@ -1,5 +1,4 @@
 # Manage rust packages with cargo - community.general.cargo module 
-
 - name: Verifica se 'starship' está instalado
   community.general.cargo:
     list: true

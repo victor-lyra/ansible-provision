@@ -1,4 +1,11 @@
 # Manage rust packages with cargo - community.general.cargo module 
-- name: Instala Starship
+
+- name: Verifica se 'starship' está instalado
+  community.general.cargo:
+    list: true
+  register: cargo_packages
+
+- name: Instala 'starship' com 'cargo'
   community.general.cargo:
     name: starship
+  when: "'starship' not in cargo_packages.packages"

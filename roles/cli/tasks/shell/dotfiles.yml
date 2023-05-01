@@ -26,7 +26,7 @@
 
 - name: Download bash/zsh completion e key-bindings para fzf
   become: yes
-  become_user: {{ usuario }}
+  become_user: "{{ usuario }}"
   ansible.builtin.get_url:
     url: "{{ item }}"
     dest: "{{ usuario_home }}/.fzf/shell/{{ item }}"

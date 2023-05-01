@@ -1,8 +1,6 @@
 - name: Verifica se download do 'starship' já foi realizado
   stat:
-    path: "{{ usuario_home }}/Downloads/{{ item }}"
-  with_fileglob:
-    - "starship*.tar.gz"
+    path: "{{ usuario_home }}/Downloads/starship*.tar.gz"
   register: starship_download
 
 - name: Download de binário pré-compilado
@@ -23,8 +21,8 @@
   
 - name: Descompacta 'starship'
   ansible.builtin.unarchive:
-    src: "{{ usuario_home }}/Downloads/{{ item }}"
+    src: "{{ item }}"
     dest: /usr/local/bin
   with_fileglob:
-    - "starship*.tar.gz"
+    - "{{ usuario_home }}/Downloads/starship*.tar.gz"
   when: starship_instalador.stat.exists == False

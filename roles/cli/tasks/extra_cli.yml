@@ -8,7 +8,8 @@
   register: extra_download
 
 - name: msg extra_download
-  debug: "{{ extra_download.stdout }}"
+  debug: 
+    var: extra_download.results
 
 - name: Download de binários pré-compilados
   become: yes

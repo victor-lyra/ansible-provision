@@ -5,10 +5,6 @@ then
     PATH="$HOME/.local/bin:$HOME/bin:$PATH"
 fi
 
-# Cargo environment
-if [ -d ~/.cargo/bin ]; then
-   PATH="$HOME/.cargo/bin:$PATH"
-fi
 export PATH
 
 # Lines configured by zsh-newuser-install

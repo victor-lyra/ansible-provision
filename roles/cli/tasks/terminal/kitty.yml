@@ -54,3 +54,7 @@
     dest: "{{ usuario_config }}/kitty/"
   when: kitty_lyra.stat.exists == False
 
+- name: Adiciona as configurações personalizadas a 'kitty.conf'
+  ansible.builtin.lineinfile:
+    path: "{{ usuario_config }}/kitty/kitty.conf"
+    line: include lyra.gruvbox.conf

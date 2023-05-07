@@ -7,9 +7,9 @@
     patterns: 'gping*.tar.gz,trippy*.tar.gz,bottom*.tar.gz'
   register: find_matches
 
-- name: msg extra_download
-  debug: 
-    var: find_matches
+#- name: msg extra_download
+#  debug: 
+#    var: find_matches
 
 - name: Download de binários pré-compilados
   become: yes
@@ -33,11 +33,12 @@
       | cut -d '"' -f 4 \
       | wget -P ~/Downloads -qi -        
   when: find_matches.matched < 3
-  
+
 - name: Verifica se 'extras' já estão instalados
-  stat:
-    path: "{{ usuario_home }}/.local/bin/gping"
-  register: extra_instalado
+  find:
+    paths: "{{ usuario_home }}/.local/bin"
+    patterns: 'gping,trip,btm'
+  register: extra_instalado  
   
 - name: Descompacta 'extra'
   ansible.builtin.unarchive:
@@ -45,9 +46,8 @@
     dest: "{{ usuario_home }}/.local/bin"
   with_fileglob:
     - "{{ usuario_home }}/Downloads/gping*.tar.gz"
-    - "{{ usuario_home }}/Downloads/trippy*.tar.gz"
     - "{{ usuario_home }}/Downloads/bottom*.tar.gz"
-  when: extra_instalado.stat.exists == False
+  when: extra_instalado.matched < 3
   
 - name: Descompacta 'trippy', evita criação de diretório dentro de '.local/bin'
   ansible.builtin.unarchive:
@@ -57,4 +57,9 @@
       - "--strip-components=1"
   with_fileglob:
     - "{{ usuario_home }}/Downloads/trippy*.tar.gz"
-#  when: extra_instalado.stat.exists == False
+  when: extra_instalado.matched < 3
+
+- name: Habilita trip para "{{ usuario }}"
+  become: yes
+  become_user: "{{ usuario }}"
+  ansible.builtin.shell: sudo chown root $(which trip) && sudo chmod +s $(which trip)

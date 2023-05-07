@@ -31,13 +31,13 @@
   
 - name: Verifica se 'extras' já estão instalados
   stat:
-    path: "{{ usuario }}/.local/bin/gping"
+    path: "{{ usuario_home }}/.local/bin/gping"
   register: extra_instalado
   
 - name: Descompacta 'starship'
   ansible.builtin.unarchive:
     src: "{{ item }}"
-    dest: "{{ usuario }}/.local/bin"
+    dest: "{{ usuario_home }}/.local/bin"
   with_fileglob:
     - "{{ usuario_home }}/Downloads/gping*.tar.gz"
     - "{{ usuario_home }}/Downloads/trippy*.tar.gz"

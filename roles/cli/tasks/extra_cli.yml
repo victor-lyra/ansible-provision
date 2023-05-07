@@ -2,8 +2,9 @@
 # trippy - like mtr, combines the functionality of traceroute and ping, supports multiple hosts
 # bottom - graphical process/system monitor for the terminal
 - name: Verifica se download de 'extras' já realizado
-  stat:
-    path: "{{ usuario_home }}/Downloads/gping*.tar.gz"
+  find:
+    path: "{{ usuario_home }}/Downloads"
+    patterns: 'gping*.tar.gz,trippy*.tar.gz,bottom*.tar.gz'
   register: extra_download
 
 - name: Download de binários pré-compilados
@@ -27,7 +28,7 @@
       | grep x86_64-unknown-linux-gnu.tar \
       | cut -d '"' -f 4 \
       | wget -P ~/Downloads -qi -        
-  when: extra_download.stat.exists == False
+  when: extra_download.matched == 3
   
 - name: Verifica se 'extras' já estão instalados
   stat:

@@ -3,7 +3,7 @@
 # bottom - graphical process/system monitor for the terminal
 - name: Verifica se download de 'extras' já realizado
   find:
-    path: "{{ usuario_home }}/Downloads"
+    paths: "{{ usuario_home }}/Downloads"
     patterns: 'gping*.tar.gz,trippy*.tar.gz,bottom*.tar.gz'
   register: extra_download
 

@@ -5,11 +5,11 @@
   find:
     paths: "{{ usuario_home }}/Downloads"
     patterns: 'gping*.tar.gz,trippy*.tar.gz,bottom*.tar.gz'
-  register: extra_download
+  register: find_matches
 
 - name: msg extra_download
   debug: 
-    var: extra_download.results
+    var: find_matches
 
 - name: Download de binários pré-compilados
   become: yes

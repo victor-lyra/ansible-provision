@@ -31,11 +31,18 @@
   command: cp /home/$SUDO_USER/.local/kitty.app/share/applications/kitty.desktop /home/$SUDO_USER/.local/share/applications/kitty.desktop
   when: kitty_desktop.stat.exists == False
   
-- name: Atualiza entrada de 'kitty.desktop'
+- name: Atualiza entrada EXEC de 'kitty.desktop'
   ansible.builtin.lineinfile:
     path: "{{ usuario_home }}/.local/share/applications/kitty.desktop"
     search_string: 'Exec=kitty'
-    line: Exec=$HOME/.local/bin/kitty
+    line: Exec="{{ usuario_home }}/.local/kitty.app/bin/kitty"
+
+- name: Atualiza entrada ICON de 'kitty.desktop'
+  ansible.builtin.lineinfile:
+    path: "{{ usuario_home }}/.local/share/applications/kitty.desktop"
+    search_string: 'Exec=kitty'
+    line: Exec="{{ usuario_home }}/.local/kitty.app/share/icons/hicolor/256x256/apps/kitty.png"    
+
 - name: Verifica a existência do ".config" para kitty
   stat:
     path: "{{ usuario_config }}/kitty/"

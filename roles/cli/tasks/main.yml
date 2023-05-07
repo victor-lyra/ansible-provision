@@ -62,6 +62,8 @@
       
       # mix
       - xdotool         # simulates key presses and clicks (https://github.com/jordansissel/xdotool)
+      - xev             # displays the X11 protocol events sent to a given window
+      - xprop           # displaying window and font properties in an X server
       - python3-pip     # python package manager
       - xinput          # query X input devices
       - keychain        # agent manager for SSH/GnuPG
@@ -79,6 +81,10 @@
       - cockpit-pcp        # Performance Co-Pilot framework to gather metrics data about the system      
     state: latest
   when: ansible_facts['distribution'] == "Fedora"
+
+# outros
+
+- include_tasks: extra_cli.yml
 
 # shell
 

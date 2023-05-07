@@ -1,0 +1,45 @@
+# gping  - graph the ping time for multiple hosts
+# trippy - like mtr, combines the functionality of traceroute and ping, supports multiple hosts
+# bottom - graphical process/system monitor for the terminal
+- name: Verifica se download de 'extras' já realizado
+  stat:
+    path: "{{ usuario_home }}/Downloads/gping*.tar.gz"
+  register: extra_download
+
+- name: Download de binários pré-compilados
+  become: yes
+  become_user: "{{ usuario }}"
+  ansible.builtin.shell: |
+    curl -s https://api.github.com/repos/orf/gping/releases/latest \
+      | grep browser_download_url \
+      | grep Linux-x86_64 \
+      | cut -d '"' -f 4 \
+      | wget -P ~/Downloads -qi -
+      
+    curl -s https://api.github.com/repos/fujiapple852/trippy/releases/latest \
+      | grep browser_download_url \
+      | grep x86_64-unknown-linux-gnu.tar \
+      | cut -d '"' -f 4 \
+      | wget -P ~/Downloads -qi -    
+    
+    curl -s https://api.github.com/repos/ClementTsang/bottom/releases/latest \
+      | grep browser_download_url \
+      | grep x86_64-unknown-linux-gnu.tar \
+      | cut -d '"' -f 4 \
+      | wget -P ~/Downloads -qi -        
+  when: extra_download.stat.exists == False
+  
+- name: Verifica se 'extras' já estão instalados
+  stat:
+    path: "{{ usuario }}/.local/bin/gping"
+  register: extra_instalado
+  
+- name: Descompacta 'starship'
+  ansible.builtin.unarchive:
+    src: "{{ item }}"
+    dest: "{{ usuario }}/.local/bin"
+  with_fileglob:
+    - "{{ usuario_home }}/Downloads/gping*.tar.gz"
+    - "{{ usuario_home }}/Downloads/trippy*.tar.gz"
+    - "{{ usuario_home }}/Downloads/bottom*.tar.gz"
+  when: extra_instalado.stat.exists == False

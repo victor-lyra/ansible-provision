@@ -73,6 +73,7 @@
       - qrencode        # generate qrcode
       - lshw            # list hardware
       - fastfetch       # system info tool
+      - neovim          # editor
       
       # cockpit
       - cockpit            # web console

@@ -35,3 +35,16 @@
     - { link: 'https://github.com/junegunn/fzf/raw/master/shell/completion.zsh', file: 'completion.zsh' }
     - { link: 'https://github.com/junegunn/fzf/raw/master/shell/key-bindings.bash', file: 'key-bindings.bash' }
     - { link: 'https://github.com/junegunn/fzf/raw/master/shell/key-bindings.zsh', file: 'key-bindings.zsh' }
+
+- name: Cria '~/.config/ranger'
+  file:
+    path: "{{ usuario_config }}/ranger"
+    state: directory
+    owner: "{{ usuario }}" 
+    group: "{{ usuario }}"
+    mode: 0775
+
+- name: Descompacta configurações de 'ranger'
+  ansible.builtin.unarchive:
+    src: ranger.tar.gz
+    dest: "{{ usuario_config }}/ranger"

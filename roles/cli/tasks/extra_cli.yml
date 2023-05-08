@@ -79,6 +79,10 @@
     paths: "{{ usuario_home }}/.local/bin"
     patterns: 'broot'
   register: broot_instalado    
+  
+- name: msg broot_instalado
+  debug: 
+    var: broot_instalado
 
 - name: Descompacta 'broot', evita criação de diretório dentro de '.local/bin'
   ansible.builtin.unarchive:

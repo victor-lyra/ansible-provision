@@ -48,6 +48,7 @@
       - exa             # better ls (https://github.com/ogham/exa)
       - ripgrep         # better grep (https://github.com/BurntSushi/ripgrep)
       - ranger          # console file manager (https://github.com/ranger/ranger)
+      - nnn             # console file manager (https://github.com/jarun/nnn)
       - htop
       - glances         # another monitoring tool (https://github.com/nicolargo/glances)
       

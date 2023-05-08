@@ -1,10 +1,11 @@
 # gping  - graph the ping time for multiple hosts
 # trippy - like mtr, combines the functionality of traceroute and ping, supports multiple hosts
 # bottom - graphical process/system monitor for the terminal
+# broot  - terminal file manager (https://dystroy.org/broot/) 
 - name: Verifica se download de 'extras' já realizado
   find:
     paths: "{{ usuario_home }}/Downloads"
-    patterns: 'gping*.tar.gz,trippy*.tar.gz,bottom*.tar.gz'
+    patterns: 'gping*.tar.gz,trippy*.tar.gz,bottom*.tar.gz,broot*.zip'
   register: find_matches
 
 #- name: msg extra_download
@@ -32,15 +33,20 @@
       | grep x86_64-unknown-linux-gnu.tar \
       | cut -d '"' -f 4 \
       | wget -P ~/Downloads -qi -        
-  when: find_matches.matched < 3
+    
+    curl -s https://api.github.com/repos/Canop/broot/releases/latest \
+      | grep browser_download_url \
+      | cut -d '"' -f 4 \
+      | wget -P ~/Downloads -qi -
+  when: find_matches.matched < 4
 
-- name: Verifica se 'gping/bottom' já estão instalados
+- name: Verifica se 'extras' já estão instalados
   find:
     paths: "{{ usuario_home }}/.local/bin"
     patterns: 'gping,btm'
   register: extra_instalado  
   
-- name: Descompacta 'gping/bottom'
+- name: Descompacta 'extras'
   ansible.builtin.unarchive:
     src: "{{ item }}"
     dest: "{{ usuario_home }}/.local/bin"
@@ -49,7 +55,7 @@
     - "{{ usuario_home }}/Downloads/bottom*.tar.gz"
   when: extra_instalado.matched < 2
 
-- name: Verifica se 'trippy' já instalado
+- name: Verifica se 'trippy' (exceção) já instalado
   find:
     paths: "{{ usuario_home }}/.local/bin"
     patterns: 'trip'
@@ -67,3 +73,24 @@
   with_fileglob:
     - "{{ usuario_home }}/Downloads/trippy*.tar.gz"
   when: trippy_instalado.matched < 1
+  
+- name: Verifica se 'broot' (exceção) já instalado
+  find:
+    paths: "{{ usuario_home }}/.local/bin"
+    patterns: 'broot'
+  register: broot_instalado    
+
+- name: Descompacta 'broot', evita criação de diretório dentro de '.local/bin'
+  ansible.builtin.unarchive:
+    src: "{{ item }}"
+    dest: "{{ usuario_home }}/.local/bin"
+    extra_opts:
+      - "x86_64-linux/broot"
+      - "--strip-components=1"
+    mode: '6755' # executar sempre como root
+    owner: "{{ usuario }}"
+    group: "{{ usuario }}"
+  with_fileglob:
+    - "{{ usuario_home }}/Downloads/broot*.tar.gz"
+  when: broot_instalado.matched < 1
+  

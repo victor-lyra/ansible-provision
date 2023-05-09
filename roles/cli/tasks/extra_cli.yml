@@ -89,8 +89,8 @@
     src: "{{ item }}"
     dest: "{{ usuario_home }}/.local/bin"
     extra_opts:
+      - "-j" # junk path
       - "x86_64-linux/broot"
-      - "--strip-components=1"
     mode: '6755' # executar sempre como root
     owner: "{{ usuario }}"
     group: "{{ usuario }}"

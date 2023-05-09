@@ -61,6 +61,8 @@
   register: kitty_lyra
 
 - name : Copia configurações personalizadas
+  become: yes
+  become_user: "{{ usuario }}"
   copy:
     src: kitty/lyra.gruvbox.conf
     dest: "{{ usuario_config }}/kitty/"

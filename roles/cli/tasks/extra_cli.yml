@@ -93,6 +93,8 @@
 
 # nvchad (https://github.com/NvChad/NvChad)
 - name: Git clone NvChad
+  become: yes
+  become_user: "{{ usuario }}"
   ansible.builtin.git:
     repo: 'https://github.com/NvChad/NvChad.git'
     dest: "{{ usuario_config }}/nvim"

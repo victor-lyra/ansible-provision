@@ -16,6 +16,7 @@
       when: ansible_facts['distribution'] == "Fedora"
 
   roles:
+    - lixo              # desinstala programas padrão não usados
     - cli               # em geral, programas de linha de comando
 #    - core              # itens basicos para demais roles (wallpaper, fontes...)
 #    - perifericos       # configuracoes de teclado, monitor

@@ -1,0 +1,11 @@
+- name: Desinstala programas originais da distro e que não são usados
+  ansible.builtin.dnf:
+    name:
+      - asunder         # audio cd ripper and encoder
+      - claws-mail      # email client
+      - gnumeric        # spreadsheet
+      - parole          # media player
+      - pidgin          # instant messaging client
+      - pragha          # Lightweight GTK+ music manager
+      - xfburn          # cd/dvd burning tool
+    state: absent

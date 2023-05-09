@@ -92,7 +92,7 @@
     extra_opts:
       - "-j" # junk path
       - "x86_64-linux/broot"
-    mode: '6755' # executar sempre como root
+    mode: '0755'
     owner: "{{ usuario }}"
     group: "{{ usuario }}"
   with_fileglob:

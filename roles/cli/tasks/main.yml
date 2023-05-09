@@ -49,7 +49,7 @@
       - ripgrep         # better grep (https://github.com/BurntSushi/ripgrep)
       - ranger          # console file manager (https://github.com/ranger/ranger)
       - nnn             # console file manager (https://github.com/jarun/nnn)
-      - htop
+      - htop            # monitoring tool
       - glances         # another monitoring tool (https://github.com/nicolargo/glances)
       
       # network
@@ -75,6 +75,8 @@
       - lshw            # list hardware
       - fastfetch       # system info tool
       - neovim          # editor
+      - pandoc          # Conversion between markup formats
+      - mupdf           # lightweight PDF viewer and toolkit
       
       # cockpit
       - cockpit            # web console

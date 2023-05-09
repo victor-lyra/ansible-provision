@@ -27,10 +27,11 @@
 - name: Instala última versão de vários programas de linha de comando
   ansible.builtin.dnf:
     name:
-      # rust
+      # code
       - cargo           # Rust's package manager and build tool
       - cmake           # control software compilation process
       - gcc-c++         # C++ support for GCC
+      - npm             # Node.js Package Manager
       
       # optional dependencies to ranger
       - caca-utils      # simple image viewer for the terminal

@@ -90,3 +90,10 @@
 # nao foi possivel, com unarchive, extrair arquivo de 'x86_64-linux/broot' e,
 # ao mesmo tempo nao criar subdiretorio no destino
 # extra_opts: "-j" e "x86_64-linux/broot" nao trabalharam em conjunto
+
+# nvchad (https://github.com/NvChad/NvChad)
+- name: Git clone NvChad
+  ansible.builtin.git:
+    repo: 'https://github.com/NvChad/NvChad.git'
+    dest: "{{ usuario_config }}/nvim"
+    depth: 1

@@ -84,6 +84,7 @@
   debug: 
     var: broot_instalado
 
+# unzip -j /home/$SUDO_USER/Downloads/broot*.zip x86_64-linux/broot -d /home/$SUDO_USER/.local/bin/
 - name: Descompacta 'broot', evita criação de diretório dentro de '.local/bin'
   ansible.builtin.unarchive:
     src: "{{ item }}"
@@ -95,6 +96,6 @@
     owner: "{{ usuario }}"
     group: "{{ usuario }}"
   with_fileglob:
-    - "{{ usuario_home }}/Downloads/broot*.tar.gz"
-#  when: broot_instalado.matched = 0
+    - "{{ usuario_home }}/Downloads/broot*.zip"
+  when: broot_instalado.matched < 1
   

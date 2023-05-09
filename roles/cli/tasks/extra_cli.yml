@@ -90,9 +90,9 @@
     src: "{{ item }}"
     dest: "{{ usuario_home }}/.local/bin"
     extra_opts:
-      - "-j" # junk path
-      - "-W 'x86_64*linux/broot'"
-    mode: '0755'
+#      - "-j" # junk path
+      - "x86_64-linux/broot"
+    mode: '0755' 
     owner: "{{ usuario }}"
     group: "{{ usuario }}"
   with_fileglob:

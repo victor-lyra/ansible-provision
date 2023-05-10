@@ -154,6 +154,6 @@
     path: "{{ usuario_config }}/bat/config"
     line: "{{item}}"
   loop:
-    - "--theme=TwoDark"
-    - "--style="numbers,changes,header"
-    - "--italic-text=always"
+    - '--theme=TwoDark'
+    - '--style="numbers,changes,header' 
+    - '--italic-text=always'

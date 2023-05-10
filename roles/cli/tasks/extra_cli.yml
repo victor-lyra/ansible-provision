@@ -120,4 +120,40 @@
     replace: oceanic-next
     
 - name: extra_cli | bat | generate config file
+  become: yes
+  become_user: "{{ usuario }}"
   command: bat --generate-config-file
+
+- name: extra_cli | bat | Verifica "{{ usuario_config }}/bat/themes"
+  stat:
+    path: "{{ usuario_config }}/bat/themes/"
+  register: bat_themes_dir
+
+- name: extra_cli | bat | Cria "{{ usuario_config }}/bat/themes"
+  file:
+    path: "{{ usuario_config }}/bat/themes/"
+    state: directory
+    mode: 0755
+    group: "{{ usuario }}"
+    owner: "{{ usuario }}"
+  when: bat_themes_dir.stat.exists == false
+
+- name: extra_cli | bat | Download temas Catppuccin
+  ansible.builtin.get_url:
+    url: "{{ item }}"
+    dest: "{{ usuario_config }}/bat/themes/"
+    mode: '0440'
+  loop:
+    - https://raw.githubusercontent.com/catppuccin/bat/main/Catppuccin-mocha.tmTheme
+    - https://raw.githubusercontent.com/catppuccin/bat/main/Catppuccin-macchiato.tmTheme
+    - https://raw.githubusercontent.com/catppuccin/bat/main/Catppuccin-latte.tmTheme
+    - https://raw.githubusercontent.com/catppuccin/bat/main/Catppuccin-frappe.tmTheme
+ 
+- name: extra_cli | bat | ajuste do arquivo de configurações
+  ansible.builtin.lineinfile:
+    path: "{{ usuario_config }}/bat/config"
+    line: "{{item}}"
+  loop:
+    - "--theme=TwoDark"
+    - "--style="numbers,changes,header"
+    - "--italic-text=always"

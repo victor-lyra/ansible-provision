@@ -139,6 +139,8 @@
   when: bat_themes_dir.stat.exists == false
 
 - name: extra_cli | bat | Download temas Catppuccin
+  become: yes
+  become_user: "{{ usuario }}"
   ansible.builtin.get_url:
     url: "{{ item }}"
     dest: "{{ usuario_config }}/bat/themes/"
@@ -148,12 +150,17 @@
     - https://raw.githubusercontent.com/catppuccin/bat/main/Catppuccin-macchiato.tmTheme
     - https://raw.githubusercontent.com/catppuccin/bat/main/Catppuccin-latte.tmTheme
     - https://raw.githubusercontent.com/catppuccin/bat/main/Catppuccin-frappe.tmTheme
+
+- name: extra_cli | bat | reconstrução do cache
+  become: yes
+  become_user: "{{ usuario }}"
+  command: bat cache --build
  
 - name: extra_cli | bat | ajuste do arquivo de configurações
   ansible.builtin.lineinfile:
     path: "{{ usuario_config }}/bat/config"
     line: "{{item}}"
   loop:
-    - '--theme=TwoDark'
-    - '--style="numbers,changes,header' 
+    - '--theme="TwoDark"'
+    - '--style="numbers,changes,header"' 
     - '--italic-text=always'

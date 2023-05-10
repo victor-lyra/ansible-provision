@@ -111,10 +111,13 @@
   ansible.builtin.lineinfile:
     path: "{{ usuario_config }}/nvim/lua/custom/highlights.lua"
     insertafter: M.override
-    line: '  CursorLine = { bg = "black2" },'
+    line: '  CursorLine = { bg = "one_bg" },'
     
 - name: extra_cli | NvChad | theme
   ansible.builtin.replace:
     path: "{{ usuario_config }}/nvim/lua/custom/chadrc.lua"
     regexp: onedark
-    replace: gruvchad
+    replace: oceanic-next
+    
+- name: extra_cli | bat | generate config file
+  command: bat --generate-config-file

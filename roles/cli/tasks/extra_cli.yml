@@ -111,7 +111,7 @@
   ansible.builtin.lineinfile:
     path: "{{ usuario_config }}/nvim/lua/custom/highlights.lua"
     insertafter: M.override
-    line: "  CursorLine = { bg = "black2" },"
+    line: '  CursorLine = { bg = "black2" },'
     
 - name: extra_cli | NvChad | theme
   ansible.builtin.replace:

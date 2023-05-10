@@ -2,7 +2,7 @@
 # trippy - like mtr, combines the functionality of traceroute and ping, supports multiple hosts
 # bottom - graphical process/system monitor for the terminal
 # broot  - terminal file manager (https://dystroy.org/broot/) 
-- name: Verifica se download de 'extras' já realizado
+- name: extra_cli | Verifica se download de 'extras' já realizado
   find:
     paths: "{{ usuario_home }}/Downloads"
     patterns: 'gping*.tar.gz,trippy*.tar.gz,bottom*.tar.gz,broot*.zip'
@@ -12,7 +12,7 @@
 #  debug: 
 #    var: find_matches
 
-- name: Download de binários pré-compilados
+- name: extra_cli | Download de binários pré-compilados
   become: yes
   become_user: "{{ usuario }}"
   ansible.builtin.shell: |
@@ -40,13 +40,13 @@
       | wget -P ~/Downloads -qi -
   when: find_matches.matched < 4
 
-- name: Verifica se 'extras' já estão instalados
+- name: extra_cli | Verifica se 'extras' já estão instalados
   find:
     paths: "{{ usuario_home }}/.local/bin"
     patterns: 'gping,btm'
   register: extra_instalado  
   
-- name: Descompacta 'extras'
+- name: extra_cli | Descompacta 'extras'
   ansible.builtin.unarchive:
     src: "{{ item }}"
     dest: "{{ usuario_home }}/.local/bin"
@@ -55,13 +55,14 @@
     - "{{ usuario_home }}/Downloads/bottom*.tar.gz"
   when: extra_instalado.matched < 2
 
-- name: Verifica se 'trippy' (exceção) já instalado
+- name: extra_cli | Verifica se 'trippy' (exceção) já instalado
   find:
     paths: "{{ usuario_home }}/.local/bin"
     patterns: 'trip'
   register: trippy_instalado    
 
-- name: Descompacta 'trippy', evita criação de diretório dentro de '.local/bin'
+- name: extra_cli | Descompacta 'trippy'
+# evita criação de diretório dentro de '.local/bin'
   ansible.builtin.unarchive:
     src: "{{ item }}"
     dest: "{{ usuario_home }}/.local/bin"
@@ -74,7 +75,7 @@
     - "{{ usuario_home }}/Downloads/trippy*.tar.gz"
   when: trippy_instalado.matched < 1
   
-- name: Verifica se 'broot' (exceção) já instalado
+- name: extra_cli | Verifica se 'broot' (exceção) já instalado
   find:
     paths: "{{ usuario_home }}/.local/bin"
     patterns: 'broot'
@@ -84,7 +85,8 @@
 #  debug: 
 #    var: broot_instalado
 
-- name: Descompacta 'broot', evita criação de diretório dentro de '.local/bin'
+- name: extra_cli | Descompacta 'broot'
+# evita criação de diretório dentro de '.local/bin'
   ansible.builtin.command: unzip -j /home/$SUDO_USER/Downloads/broot*.zip x86_64-linux/broot -d /home/$SUDO_USER/.local/bin/
   when: broot_instalado.matched < 1
 # nao foi possivel, com unarchive, extrair arquivo de 'x86_64-linux/broot' e,
@@ -92,10 +94,28 @@
 # extra_opts: "-j" e "x86_64-linux/broot" nao trabalharam em conjunto
 
 # nvchad (https://github.com/NvChad/NvChad)
-- name: Git clone NvChad
+- name: extra_cli | Git clone NvChad
   become: yes
   become_user: "{{ usuario }}"
   ansible.builtin.git:
     repo: 'https://github.com/NvChad/NvChad.git'
     dest: "{{ usuario_config }}/nvim"
     depth: 1
+
+- name: extra_cli | NvChad | relative number
+  ansible.builtin.lineinfile:
+    path: "{{ usuario_config }}/nvim/lua/custom/init.lua"
+    line: vim.opt.relativenumber = true
+    
+- name: extra_cli | NvChad | highlight focus line
+  ansible.builtin.lineinfile:
+    path: "{{ usuario_config }}/nvim/lua/custom/highlights.lua"
+    insertafter: M.override
+    line: CursorLine = { bg = "black2" },
+    
+- name: extra_cli | NvChad | theme
+  ansible.builtin.blockinfile:
+    path: "{{ usuario_config }}/nvim/lua/custom/chadrc.lua"
+    block: |
+      theme = "gruvchad", 
+      theme_toggle = { "gruvchad","one_light" },

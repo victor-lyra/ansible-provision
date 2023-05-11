@@ -200,6 +200,12 @@
     group: "{{ usuario }}"
     mode: '0644'
 
+# https://github.com/lesspass/lesspass
 - name: extra_cli | lesspass | Instalação
   ansible.builtin.pip:
     name: lesspass
+
+# https://github.com/mps-youtube/yewtube    
+- name: extra_cli | yewtube | Instalação
+  ansible.builtin.pip:
+    name: yewtube    

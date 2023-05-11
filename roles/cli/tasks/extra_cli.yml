@@ -144,11 +144,11 @@
   ansible.builtin.get_url:
     url: "{{ item }}"
     dest: "{{ usuario_config }}/bat/themes/"
-    mode: '0440'
+    mode: '0644'
   loop:
-    - https://raw.githubusercontent.com/catppuccin/bat/main/Catppuccin-mocha.tmTheme
-    - https://raw.githubusercontent.com/catppuccin/bat/main/Catppuccin-macchiato.tmTheme
-    - https://raw.githubusercontent.com/catppuccin/bat/main/Catppuccin-latte.tmTheme
+    - https://raw.githubusercontent.com/SublimeText/Spacegray/main/base16-eighties.dark.tmTheme
+    - https://raw.githubusercontent.com/SublimeText/Spacegray/main/base16-mocha.dark.tmTheme
+    - https://raw.githubusercontent.com/SublimeText/Spacegray/main/base16-ocean.dark.tmTheme
     - https://raw.githubusercontent.com/catppuccin/bat/main/Catppuccin-frappe.tmTheme
 
 - name: extra_cli | bat | reconstrução do cache
@@ -164,3 +164,19 @@
     - '--theme="TwoDark"'
     - '--style="numbers,changes,header"' 
     - '--italic-text=always'
+
+- name: extra_cli | rclone | Verifica "{{ usuario_home }}/virtual-drive"
+  stat:
+    path: "{{ usuario_home }}/virtual-drive"
+  register: virtual_drive_dir
+       
+- name: extra_cli | rclone | Cria "{{ usuario_home }}/virtual-drive" e sub-diretórios
+  file:
+    path: "{{ usuario_home }}/virtual-drive/{{ item }}"
+    state: directory
+    recurse: yes
+    mode: 0755
+    group: "{{ usuario }}"
+    owner: "{{ usuario }}"
+  with_items: ["box","box-cache","dropbox","dropbox-cache","google-drive","google-drive-cache","mega","mega-cache","onedrive","onedrive-cache","ora-cloud","ora-cloud-cache",]
+  when: virtual_drive_dir.stat.exists == false

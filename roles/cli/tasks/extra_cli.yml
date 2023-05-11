@@ -150,6 +150,9 @@
     - https://raw.githubusercontent.com/SublimeText/Spacegray/main/base16-mocha.dark.tmTheme
     - https://raw.githubusercontent.com/SublimeText/Spacegray/main/base16-ocean.dark.tmTheme
     - https://raw.githubusercontent.com/catppuccin/bat/main/Catppuccin-frappe.tmTheme
+    - https://raw.githubusercontent.com/catppuccin/bat/main/Catppuccin-latte.tmTheme
+    - https://raw.githubusercontent.com/catppuccin/bat/main/Catppuccin-macchiato.tmTheme
+    - https://raw.githubusercontent.com/catppuccin/bat/main/Catppuccin-mocha.tmTheme            
 
 - name: extra_cli | bat | reconstrução do cache
   become: yes
@@ -180,3 +183,15 @@
     owner: "{{ usuario }}"
   with_items: ["box","box-cache","dropbox","dropbox-cache","google-drive","google-drive-cache","mega","mega-cache","onedrive","onedrive-cache","ora-cloud","ora-cloud-cache",]
   when: virtual_drive_dir.stat.exists == false
+
+- name: extra_cli | rclone | Download '.rclone.conf.gpg'
+  become: yes
+  become_user: "{{ usuario }}"
+  ansible.builtin.get_url:
+    url: https://github.com/victor-lyra/fedfiles/raw/main/.rclone.conf.gpg
+    dest: "{{ usuario_home }}"
+    mode: '0644'
+
+- name: extra_cli | lesspass | Instalação
+  ansible.builtin.pip:
+    name: lesspass

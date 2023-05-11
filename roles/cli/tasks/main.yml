@@ -32,6 +32,8 @@
       - cmake           # control software compilation process
       - gcc-c++         # C++ support for GCC
       - npm             # Node.js Package Manager
+      - python3-virtualenv # Create isolated python environments
+      - python3-setuptools # Easily build and distribute Python 3 packages
       
       # optional dependencies to ranger
       - caca-utils      # simple image viewer for the terminal

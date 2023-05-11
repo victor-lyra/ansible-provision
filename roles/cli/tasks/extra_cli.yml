@@ -184,6 +184,14 @@
   with_items: ["box","box-cache","dropbox","dropbox-cache","google-drive","google-drive-cache","mega","mega-cache","onedrive","onedrive-cache","ora-cloud","ora-cloud-cache",]
   when: virtual_drive_dir.stat.exists == false
 
+- name: extra_cli | rclone | Cria "{{ usuario_config }}/rclone"
+  file:
+    path: "{{ usuario_config }}/rclone/"
+    state: directory
+    mode: 0755
+    group: "{{ usuario }}"
+    owner: "{{ usuario }}"
+
 - name: extra_cli | rclone | Download '.rclone.conf.gpg'
   copy:
     src: rclone.conf.gpg

@@ -168,4 +168,4 @@ alias vd-ora-cloud='rclone --vfs-cache-mode writes mount ora-cloud:/ora-bucket /
 
 ## password
 # lesspass
-alias pass=".local/bin/lesspass -c"
+alias pass="lesspass -c"

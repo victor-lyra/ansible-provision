@@ -79,6 +79,7 @@
       - neovim          # editor
       - pandoc          # Conversion between markup formats
       - mupdf           # lightweight PDF viewer and toolkit
+      - kitty-terminfo  # terminfo file for Kitty Terminal
       
       # cockpit
       - cockpit            # web console

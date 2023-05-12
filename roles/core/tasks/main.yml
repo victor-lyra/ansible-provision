@@ -17,7 +17,7 @@
       | grep -Ei 'bit|cousine|fantasque|firacode|hack|ibm|iosevkaterm|jet|nerdfonts|roboto|ubuntumono|victor' \
       | cut -d '"' -f 4 \
       | wget -P ~/Downloads/fontes -qi -
-  when: find_matches.matched < 12
+  when: fontes_download.matched < 12
 
 - name: cli | fontes | Download do repositório
   copy:

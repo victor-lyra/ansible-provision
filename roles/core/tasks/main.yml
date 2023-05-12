@@ -1,47 +1,54 @@
-- name: Copia arquivos de fontes
+- name: cli | fontes | Verifica se download realizado
+  find:
+    paths: "{{ usuario_home }}/Downloads/fontes/"
+    patterns: 'bitstream,cousine,fantasque,fira,hack,ibm,iosevka,jetbrains,nerdfonts,roboto,ubuntu,victor'
+  register: fontes_download
+
+#- name: msg extra_download
+#  debug: 
+#    var: fontes_download
+
+- name: cli | fontes | Download do NerdFonts
+  become: yes
+  become_user: "{{ usuario }}"
+  ansible.builtin.shell: |
+    curl -s https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest \
+      | grep browser_download_url \
+      | grep -Ei 'bit|cousine|fantasque|firacode|hack|ibm|iosevkaterm|jet|nerdfonts|roboto|ubuntumono|victor' \
+      | cut -d '"' -f 4 \
+      | wget -P ~/Downloads/fontes -qi -
+  when: find_matches.matched < 12
+
+- name: cli | fontes | Download do repositório
   copy:
-    src: "{{ item }}"
+    src: fonts/fonts.zip
     dest: "{{ usuario_home }}/Downloads/fontes/"
     owner: "{{ usuario }}"
     group: "{{ usuario }}"
     mode: "0644"
-  loop:
-    - fonts/NerdFontsSymbolsOnly.zip
-    - fonts/BitstreamVeraSansMono.zip
-    - fonts/FantasqueSansMono.zip
-    - fonts/FiraCode.zip
-    - fonts/Hack.zip
-    - fonts/IBMPlexMono.zip
-    - fonts/UbuntuMono.zip
-    - fonts/VictorMono.zip
-    - fonts/RobotoMono.zip
-    - fonts/Cousine.zip
-    - fonts/fonts.zip
-    - fonts/JetBrainsMono.zip
-    - fonts/Iosevka.zip
-
+    
 - name: Verifica existência de arquivos de fonte instalada
   stat:
-    path: "/usr/share/fonts/Iosevka/"
-  register: iosevka_present  
+    path: "/usr/share/fonts/Hack/"
+  register: hack_present  
 
 - name: Instalação de fontes
   shell: "unzip -o {{ usuario_home }}/Downloads/fontes/{{ item }} -d /usr/share/fonts/$(basename {{ item }} .zip)"
   loop: 
-    - NerdFontsSymbolsOnly.zip
     - BitstreamVeraSansMono.zip
+    - Cousine.zip
     - FantasqueSansMono.zip
     - FiraCode.zip
     - Hack.zip
     - IBMPlexMono.zip
+    - IosevkaTerm.zip
+    - JetBrainsMono.zip
+    - NerdFontsSymbolsOnly.zip
+    - RobotoMono.zip
     - UbuntuMono.zip
     - VictorMono.zip
-    - RobotoMono.zip
-    - Cousine.zip
     - fonts.zip
-    - JetBrainsMono.zip
-    - Iosevka.zip
-  when: iosevka_present.stat.exists == false
+  when: hack_present.stat.exists == false
 
 - name: Verifica caminho - /comum/wallpapers
   stat:

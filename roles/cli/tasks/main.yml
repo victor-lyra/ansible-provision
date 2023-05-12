@@ -82,6 +82,7 @@
       - pandoc          # Conversion between markup formats
       - mupdf           # lightweight PDF viewer and toolkit
       - kitty-terminfo  # terminfo file for Kitty Terminal
+      - mpv             # movie player
       
       # cockpit
       - cockpit            # web console

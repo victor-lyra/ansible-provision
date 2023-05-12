@@ -1,4 +1,4 @@
-- name: cli | fontes | Verifica se download realizado
+- name: fontes | Verifica se download realizado
   find:
     paths: "{{ usuario_home }}/Downloads/fontes/"
     patterns: 'bitstream,cousine,fantasque,fira,hack,ibm,iosevka,jetbrains,nerdfonts,roboto,ubuntu,victor'
@@ -8,7 +8,7 @@
 #  debug: 
 #    var: fontes_download
 
-- name: cli | fontes | Download do NerdFonts
+- name: fontes | Download do NerdFonts
   become: yes
   become_user: "{{ usuario }}"
   ansible.builtin.shell: |
@@ -19,7 +19,7 @@
       | wget -P ~/Downloads/fontes -qi -
   when: fontes_download.matched < 12
 
-- name: cli | fontes | Download do repositório
+- name: fontes | Download do repositório
   copy:
     src: fonts/fonts.zip
     dest: "{{ usuario_home }}/Downloads/fontes/"
@@ -27,7 +27,7 @@
     group: "{{ usuario }}"
     mode: "0644"
     
-- name: Verifica existência de arquivos de fonte instalada
+- name: fontes | Verifica instalação da fonte em '/usr/share/fonts'
   stat:
     path: "/usr/share/fonts/Hack/"
   register: hack_present  
@@ -50,12 +50,12 @@
     - fonts.zip
   when: hack_present.stat.exists == false
 
-- name: Verifica caminho - /comum/wallpapers
+- name: wallpaper | Verifica diretório '/comum/wallpapers'
   stat:
     path: /comum/wallpapers/
   register: wallpapers_path
 
-- name: Copia *wallpapers* (extrai arquivo .zip)
+- name: wallpaper | Extrai arquivo '.zip'
   ansible.builtin.unarchive:
     src: wallpapers/wallpapers.zip
     dest: /comum/wallpapers/

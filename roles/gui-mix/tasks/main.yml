@@ -1,3 +1,4 @@
+# https://www.sublimetext.com/docs/linux_repositories.html
 - name: gui-mix | Sublime | Importa chaves do repositório
   ansible.builtin.rpm_key:
     state: present
@@ -5,9 +6,14 @@
     
 - name: gui-mix | Sublime | Adiciona repositório 
   ansible.builtin.dnf:
-    name: "https://download.sublimetext.com/rpm/stable/x86_64/sublime-text.repo"
+    name: https://download.sublimetext.com/rpm/stable/x86_64/sublime-text.repo
     state: present
   when: ansible_facts['distribution'] == "Fedora"    
+
+- name: gui-mix | Vivaldi | Importa chaves do repositório
+  ansible.builtin.rpm_key:
+    state: present
+    key: https://repo.vivaldi.com/stable/linux_signing_key.pub
 
 - name: gui-mix | Vivaldi | Adiciona repositório 
   ansible.builtin.dnf:

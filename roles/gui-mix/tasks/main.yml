@@ -6,7 +6,7 @@
     
 - name: gui-mix | Sublime | Adiciona repositório 
   ansible.builtin.dnf:
-    name: https://download.sublimetext.com/rpm/stable/x86_64/sublime-text.repo
+    name: https://download.sublimetext.com/rpm/stable/x86_64/sublime.repo
     state: present
   when: ansible_facts['distribution'] == "Fedora"    
 

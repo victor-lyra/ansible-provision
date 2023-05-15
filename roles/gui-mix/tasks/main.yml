@@ -4,11 +4,21 @@
     state: present
     key: https://download.sublimetext.com/sublimehq-rpm-pub.gpg
     
+#- name: gui-mix | Sublime | Adiciona repositório 
+#  ansible.builtin.dnf:
+#    name: https://download.sublimetext.com/rpm/stable/x86_64/sublime-text.repo
+#    state: present
+#  when: ansible_facts['distribution'] == "Fedora"    
+
 - name: gui-mix | Sublime | Adiciona repositório 
-  ansible.builtin.dnf:
-    name: https://download.sublimetext.com/rpm/stable/x86_64/sublime.repo
+  yum_repository:
+    name: sublime
+    file: sublime
+    baseurl: https://download.sublimetext.com/rpm/stable/x86_64
     state: present
-  when: ansible_facts['distribution'] == "Fedora"    
+    enabled: true
+    gpgcheck: true
+    gpgkey: https://download.sublimetext.com/sublimehq-rpm-pub.gpg
 
 - name: gui-mix | Vivaldi | Importa chaves do repositório
   ansible.builtin.rpm_key:

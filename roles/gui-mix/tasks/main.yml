@@ -1,0 +1,54 @@
+- name: gui-mix | Sublime | Importa chaves do repositório
+  ansible.builtin.rpm_key:
+    state: present
+    key: https://download.sublimetext.com/sublimehq-rpm-pub.gpg
+    
+- name: gui-mix | Sublime | Adiciona repositório 
+  ansible.builtin.dnf:
+    name: "https://download.sublimetext.com/rpm/stable/x86_64"
+    state: present
+  when: ansible_facts['distribution'] == "Fedora"    
+
+- name: gui-mix | Vivaldi | Adiciona repositório 
+  ansible.builtin.dnf:
+    name: "https://repo.vivaldi.com/stable/vivaldi-fedora.repo"
+    state: present
+  when: ansible_facts['distribution'] == "Fedora"
+
+- name: gui-mix | Instala última versão de vários programas do ambiente gráfico
+  ansible.builtin.dnf:
+    name:
+      # geany
+      - geany-plugins-addons
+      - geany-plugins-common
+      - geany-plugins-markdown
+      - geany-plugins-overview
+      - geany-plugins-treebrowser
+      - geany-themes
+      - geany-plugins-autoclose
+      - geany-plugins-automark
+      - geany-plugins-geanyextrasel
+      
+      # editor
+      - sublime-text
+      - libreoffice
+     
+      # diff
+      - meld
+      
+      # navegador
+      - qutebrowser
+      - vivaldi-stable
+      
+      # remote
+      - remmina
+      
+      # net
+      - wireshark
+
+      # mix
+      - copyq                           # clipboard manager (substitui 'xclipboard')
+      - lightdm-gtk-greeter-settings    # Settings editor for LightDM GTK+ Greeter
+      - foliate                         # GTK eBook reader
+      - baobab                          # graphical directory tree analyzer
+      - ulauncher                       # application launcher

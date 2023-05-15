@@ -1,0 +1,104 @@
+# MarkText (https://github.com/marktext/marktext): markdown editor
+# Obsidian (https://github.com/obsidianmd/obsidian-releases): markdown editor
+# Motrix (https://github.com/agalwood/Motrix): download manager
+# WindTerm (https://github.com/kingToolbox/WindTerm): ssh/sftp/shell/telnet/serial terminal
+# DBeaver (https://github.com/dbeaver/dbeaver): database tool
+- name: extra_gui-mix | Cria diretório '/opt' caso não exista
+  ansible.builtin.file:
+    path: /opt
+    state: directory
+    mode: '0755'
+
+- name: extra_gui-mix | AppImages | Verifica se download realizado
+  find:
+    paths: "{{ usuario_home }}/.local/bin/"
+    patterns: '*.AppImage'
+  register: appimage_download
+
+#- name: msg extra_download
+#  debug: 
+#    var: appimage_download
+
+- name: extra_gui-mix | AppImages | Download 
+  become: yes
+  become_user: "{{ usuario }}"
+  ansible.builtin.shell: |
+    curl -s https://api.github.com/repos/marktext/marktext/releases/latest \
+      | grep browser_download_url \
+      | grep AppImage \
+      | cut -d '"' -f 4
+      | wget -P ~/.local/bin -qi -
+      
+    curl -s https://api.github.com/repos/obsidianmd/obsidian-releases/releases/latest \
+      | grep browser_download_url \
+      | grep AppImage | grep -v arm64 \
+      | cut -d '"' -f 4
+      | wget -P ~/.local/bin -qi -
+      
+    curl -s https://api.github.com/repos/agalwood/Motrix/releases/latest \
+      | grep browser_download_url \
+      | grep AppImage | grep -v arm \
+      | cut -d '"' -f 4
+      
+    chmod +x *.AppImage
+  when: appimage_download.matched < 3
+
+- name: extra_gui-mix | WindTerm | Verifica se download realizado
+  find:
+    paths: "{{ usuario_home }}/Downloads/"
+    patterns: 'WindTerm*.tar.gz'
+  register: windterm_download
+  
+- name: extra_gui-mix | Windterm | Instalação completa
+  ansible.builtin.shell: |
+    # download
+    curl -s https://api.github.com/repos/kingToolbox/WindTerm/releases/latest \
+      | grep browser_download_url \
+      | grep Linux \ 
+      | cut -d '"' -f 4
+      | wget -P ~/Downloads -qi -
+    
+    # descompacta em '/opt'  
+    gtar -xf ~/Downloads/WindTerm*.tar.gz -C /opt
+    
+    # copia arquivo 'desktop' para '/usr/share/applications'
+    cp /opt/WindTerm*/windterm.desktop /usr/share/applications
+    
+    # cria 'link' simbólico em '/usr/bin/'
+    cp -s /opt/WindTerm*/WindTerm /usr/bin/windterm
+  when: windterm_download.matched < 1
+  
+- name: extra_gui-mix | DBeaver | Verifica se download realizado
+  find:
+    paths: "{{ usuario_home }}/Downloads/"
+    patterns: 'dbeaver-ce*.tar.gz'
+  register: dbeaver_download
+  
+- name: extra_gui-mix | DBeaver | Instalação completa
+  ansible.builtin.shell: |
+    # download
+    curl -s https://api.github.com/repos/dbeaver/dbeaver/releases/latest \
+      | grep browser_download_url \
+      | grep linux | grep -v nojdk \
+      | cut -d '"' -f 4
+      | wget -P ~/Downloads -qi -
+    
+    # descompacta em '/opt'  
+    gtar -xf ~/Downloads/dbeaver-ce*.tar.gz -C /opt
+    
+    # copia arquivo 'desktop' para '/usr/share/applications'
+    cp /opt/dbeaver/dbeaver-ce.desktop /usr/share/applications
+    
+    # corrige Path/Exec/Icon do arquivo 'desktop'
+    sed -i 's+/usr/share/dbeaver-ce/+/opt/dbeaver/+g' /usr/share/applications/dbeaver-ce.desktop
+    
+    # cria 'link' simbólico em '/usr/bin/'
+    cp -s /opt/dbeaver/dbeaver /usr/bin/dbeaver
+  when: dbeaver_download.matched < 1
+  
+- name: extra_gui-mix | Packet Tracer | scripts para instalação
+  become: yes
+  become_user: "{{ usuario }}"
+  ansible.builtin.git:
+    repo: 'https://github.com/thiagoojack/packettracer-fedora.git'
+    dest: "{{ usuario_home }}/Downloads/"

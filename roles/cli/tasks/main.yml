@@ -83,6 +83,7 @@
       - mupdf           # lightweight PDF viewer and toolkit
       - kitty-terminfo  # terminfo file for Kitty Terminal
       - mpv             # movie player
+      - snapper         # filesystem snapshot management
       
       # cockpit
       - cockpit            # web console

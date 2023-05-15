@@ -16,11 +16,12 @@
       when: ansible_facts['distribution'] == "Fedora"
 
   roles:
-#    - lixo              # desinstala programas padrão não usados
+#    - no-tnx            # desinstala programas padrão não usados
 #    - cli               # em geral, programas de linha de comando
-    - core              # itens basicos para demais roles (wallpaper, fontes...)
 #    - perifericos       # configuracoes de teclado, monitor
-#    - xfce              # configuracoes para XFCE4
+#    - gui-core          # itens basicos para demais roles (wallpaper, fontes...)
+#    - gui-xfce          # configuracoes para XFCE4
+    - gui-mix           # editores, navegadores, entre outras ferramentas do ambiente gráfico
 
   # tarefas que deve ser executadas ao final de todas as demais
   post_tasks:

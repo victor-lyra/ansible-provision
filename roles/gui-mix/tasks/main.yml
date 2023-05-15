@@ -20,17 +20,31 @@
     enabled: true
     gpgcheck: true
     gpgkey: https://download.sublimetext.com/sublimehq-rpm-pub.gpg
+  when: ansible_facts['distribution'] == "Fedora"    
 
 - name: gui-mix | Vivaldi | Importa chaves do repositório
   ansible.builtin.rpm_key:
     state: present
     key: https://repo.vivaldi.com/stable/linux_signing_key.pub
 
+#- name: gui-mix | Vivaldi | Adiciona repositório 
+#  ansible.builtin.dnf:
+#    name: "https://repo.vivaldi.com/stable/vivaldi-fedora.repo"
+#    state: present
+#  when: ansible_facts['distribution'] == "Fedora"
+
 - name: gui-mix | Vivaldi | Adiciona repositório 
-  ansible.builtin.dnf:
-    name: "https://repo.vivaldi.com/stable/vivaldi-fedora.repo"
+  yum_repository:
+    name: vivaldi
+    description: Sublime Text Editor Repository
+    file: sublime
+    baseurl: https://repo.vivaldi.com/archive/rpm/x86_64
     state: present
-  when: ansible_facts['distribution'] == "Fedora"
+    enabled: true
+    gpgcheck: true
+    gpgkey: https://repo.vivaldi.com/archive/linux_signing_key.pub
+  when: ansible_facts['distribution'] == "Fedora"    
+
 
 - name: gui-mix | Instala última versão de vários programas do ambiente gráfico
   ansible.builtin.dnf:

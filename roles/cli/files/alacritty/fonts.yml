@@ -5,23 +5,23 @@
 font:
   # Normal (roman) font face
   normal:
-    family: "VictorMono Nerd Font Mono"
+    family: "VictorMono Nerd Font"
     #family: "Iosevka Term"
-    style: Light
+    style: Medium
 
   # Bold font face
   bold:
-    family: "VictorMono Nerd Font Mono"
+    family: "VictorMono Nerd Font"
     style: Bold
 
   # Italic font face
   italic:
-    family: "VictorMono Nerd Font Mono"
+    family: "VictorMono Nerd Font"
     style: Italic
 
   # Bold italic font face
   bold_italic:
-    family: "VictorMono Nerd Font Mono"
+    family: "VictorMono Nerd Font"
     style: Bold Italic
 
   # Point size

@@ -13,6 +13,7 @@
 - name: gui-mix | Sublime | Adiciona repositório 
   yum_repository:
     name: sublime
+    description: Sublime Text Editor Repository
     file: sublime
     baseurl: https://download.sublimetext.com/rpm/stable/x86_64
     state: present

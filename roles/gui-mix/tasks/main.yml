@@ -45,7 +45,6 @@
     gpgkey: https://repo.vivaldi.com/archive/linux_signing_key.pub
   when: ansible_facts['distribution'] == "Fedora"    
 
-
 - name: gui-mix | Instala última versão de vários programas do ambiente gráfico
   ansible.builtin.dnf:
     name:
@@ -83,3 +82,19 @@
       - foliate                         # GTK eBook reader
       - baobab                          # graphical directory tree analyzer
       - ulauncher                       # application launcher
+
+- name: gui-mix | Sublime | Configuração presente?
+  find:
+    paths: "{{ usuario_config }}/sublime-text/Installed Packages/"
+    patterns: '*.sublime-package'
+  register: sublime_config
+      
+- name: gui-mix | Sublime | Estabelece configuração padrão
+  ansible.builtin.unarchive:
+    src: sublime.tar.gz
+    dest: "{{ usuario_config }}/sublime-text/"
+  when: sublime_config.matched < 1
+
+# outras instalações: AppImage, tarballs etc
+
+#- include_tasks: extra-gui-mix.yml      

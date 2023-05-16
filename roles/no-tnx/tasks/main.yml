@@ -8,4 +8,5 @@
       - pidgin          # instant messaging client
       - pragha          # Lightweight GTK+ music manager
       - xfburn          # cd/dvd burning tool
+      - gnome-keyring   # Framework for managing passwords and other secrets
     state: absent

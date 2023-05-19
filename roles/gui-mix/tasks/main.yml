@@ -88,7 +88,7 @@
     paths: "{{ usuario_config }}/sublime-text/Installed Packages/"
     patterns: '*.sublime-package'
   register: sublime_config
-      
+  
 - name: gui-mix | Sublime | Estabelece configuração padrão
   ansible.builtin.unarchive:
     src: sublime.tar.gz

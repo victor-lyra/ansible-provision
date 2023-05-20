@@ -82,6 +82,8 @@
       - foliate                         # GTK eBook reader
       - baobab                          # graphical directory tree analyzer
       - ulauncher                       # application launcher
+      - qalculate-gtk                   # desktop calculator
+      - xkill                           # force-close an X client's connection
 
 - name: gui-mix | Sublime | Configuração presente?
   find:
@@ -89,11 +91,41 @@
     patterns: '*.sublime-package'
   register: sublime_config
   
-- name: gui-mix | Sublime | Estabelece configuração padrão
+- name: gui-mix | Sublime | Define configuração padrão
   ansible.builtin.unarchive:
     src: sublime.tar.gz
     dest: "{{ usuario_config }}/sublime-text/"
   when: sublime_config.matched < 1
+
+- name: gui-mix | lightdm-gtk-greeter | Define configuração padrão
+  ansible.builtin.copy:
+    src: lightdm-gtk-greeter.conf
+    dest: /etc/lightdm/lightdm-gtk-greeter.conf
+    mode: '0644'
+
+- name: gui-mix | ulauncher/copyq | Define autostart
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "{{ usuario_config }}/autostart/"
+    mode: '0644'
+    owner: "{{ usuario }}"
+    group: "{{ usuario }}"
+  loop:
+    - /usr/share/applications/ulauncher.desktop
+    - /usr/share/applications/com.github.hluk.copyq.desktop
+
+- name: gui-mix | no autostart | Arquivos presentes?
+  find:
+    paths: "{{ usuario_config }}/autostart/"
+    patterns: '*.desktop'
+  register: no_autostart_config
+  
+- name: gui-mix | no autostart | Copia arquivos
+  ansible.builtin.unarchive:
+    src: no-autostart.tar.gz
+    dest: "{{ usuario_config }}/autostart/"
+  when: no_autostart_config.matched < 4
+
 
 # outras instalações: AppImage, tarballs etc
 

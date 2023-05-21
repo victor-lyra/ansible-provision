@@ -12,7 +12,7 @@
 - name: extra_gui-mix | WindTerm | Verifica se instalado
   find:
     paths: "/usr/bin/"
-    patterns: 'windterm'
+    patterns: '*windterm*'
   register: windterm_instalado
 
 - name: msg debug

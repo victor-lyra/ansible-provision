@@ -105,7 +105,7 @@
     path: "{{ usuario_home }}/Downloads/packet-tracer-fedora"
     state: directory
     mode: '0755'
-  become_usr: "{{ usuario }}"
+  become_user: "{{ usuario }}"
 
 - name: extra_gui-mix | Packet Tracer | scripts para instalação
   ansible.builtin.git:

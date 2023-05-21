@@ -9,6 +9,59 @@
     state: directory
     mode: '0755'
 
+- name: extra_gui-mix | WindTerm | Verifica se download realizado
+  find:
+    paths: "{{ usuario_home }}/Downloads/"
+    patterns: 'WindTerm*.tar.gz'
+  register: windterm_download
+  
+- name: extra_gui-mix | Windterm | Instalação completa
+  ansible.builtin.shell: |
+    # download
+    curl -s https://api.github.com/repos/kingToolbox/WindTerm/releases/latest \
+      | grep browser_download_url \
+      | grep Linux \ 
+      | cut -d '"' -f 4 \
+      | wget -P ~/Downloads -qi -
+    
+    # descompacta em '/opt'  
+    gtar -xf ~/Downloads/WindTerm*.tar.gz -C /opt
+    
+    # copia arquivo 'desktop' para '/usr/share/applications'
+    cp /opt/WindTerm*/windterm.desktop /usr/share/applications
+    
+    # cria 'link' simbólico em '/usr/bin/'
+    cp -s /opt/WindTerm*/WindTerm /usr/bin/windterm
+  when: windterm_download.matched < 1
+  
+- name: extra_gui-mix | DBeaver | Verifica se download realizado
+  find:
+    paths: "{{ usuario_home }}/Downloads/"
+    patterns: 'dbeaver-ce*.tar.gz'
+  register: dbeaver_download
+  
+- name: extra_gui-mix | DBeaver | Instalação completa
+  ansible.builtin.shell: |
+    # download
+    curl -s https://api.github.com/repos/dbeaver/dbeaver/releases/latest \
+      | grep browser_download_url \
+      | grep linux | grep -v nojdk \
+      | cut -d '"' -f 4 \
+      | wget -P ~/Downloads -qi -
+    
+    # descompacta em '/opt'  
+    gtar -xf ~/Downloads/dbeaver-ce*.tar.gz -C /opt
+    
+    # copia arquivo 'desktop' para '/usr/share/applications'
+    cp /opt/dbeaver/dbeaver-ce.desktop /usr/share/applications
+    
+    # corrige Path/Exec/Icon do arquivo 'desktop'
+    sed -i 's+/usr/share/dbeaver-ce/+/opt/dbeaver/+g' /usr/share/applications/dbeaver-ce.desktop
+    
+    # cria 'link' simbólico em '/usr/bin/'
+    cp -s /opt/dbeaver/dbeaver /usr/bin/dbeaver
+  when: dbeaver_download.matched < 1
+
 - name: extra_gui-mix | AppImages | Verifica se download realizado
   find:
     paths: "{{ usuario_home }}/.local/bin/"
@@ -43,62 +96,6 @@
       
     chmod +x ~/.local/bin/*.AppImage
   when: appimage_download.matched < 3
-
-- name: extra_gui-mix | WindTerm | Verifica se download realizado
-  find:
-    paths: "{{ usuario_home }}/Downloads/"
-    patterns: 'WindTerm*.tar.gz'
-  register: windterm_download
-  
-- name: extra_gui-mix | Windterm | Instalação completa
-  become: yes
-  become_user: root
-  ansible.builtin.shell: |
-    # download
-    curl -s https://api.github.com/repos/kingToolbox/WindTerm/releases/latest \
-      | grep browser_download_url \
-      | grep Linux \ 
-      | cut -d '"' -f 4 \
-      | wget -P ~/Downloads -qi -
-    
-    # descompacta em '/opt'  
-    gtar -xf ~/Downloads/WindTerm*.tar.gz -C /opt
-    
-    # copia arquivo 'desktop' para '/usr/share/applications'
-    cp /opt/WindTerm*/windterm.desktop /usr/share/applications
-    
-    # cria 'link' simbólico em '/usr/bin/'
-    cp -s /opt/WindTerm*/WindTerm /usr/bin/windterm
-  when: windterm_download.matched < 1
-  
-- name: extra_gui-mix | DBeaver | Verifica se download realizado
-  find:
-    paths: "{{ usuario_home }}/Downloads/"
-    patterns: 'dbeaver-ce*.tar.gz'
-  register: dbeaver_download
-  
-- name: extra_gui-mix | DBeaver | Instalação completa
-  become: yes
-  ansible.builtin.shell: |
-    # download
-    curl -s https://api.github.com/repos/dbeaver/dbeaver/releases/latest \
-      | grep browser_download_url \
-      | grep linux | grep -v nojdk \
-      | cut -d '"' -f 4 \
-      | wget -P ~/Downloads -qi -
-    
-    # descompacta em '/opt'  
-    gtar -xf ~/Downloads/dbeaver-ce*.tar.gz -C /opt
-    
-    # copia arquivo 'desktop' para '/usr/share/applications'
-    cp /opt/dbeaver/dbeaver-ce.desktop /usr/share/applications
-    
-    # corrige Path/Exec/Icon do arquivo 'desktop'
-    sed -i 's+/usr/share/dbeaver-ce/+/opt/dbeaver/+g' /usr/share/applications/dbeaver-ce.desktop
-    
-    # cria 'link' simbólico em '/usr/bin/'
-    cp -s /opt/dbeaver/dbeaver /usr/bin/dbeaver
-  when: dbeaver_download.matched < 1
   
 - name: extra_gui-mix | Packet Tracer | scripts para instalação
   become: yes

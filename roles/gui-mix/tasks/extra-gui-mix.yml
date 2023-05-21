@@ -51,6 +51,7 @@
   register: windterm_download
   
 - name: extra_gui-mix | Windterm | Instalação completa
+  become: yes
   ansible.builtin.shell: |
     # download
     curl -s https://api.github.com/repos/kingToolbox/WindTerm/releases/latest \
@@ -76,12 +77,13 @@
   register: dbeaver_download
   
 - name: extra_gui-mix | DBeaver | Instalação completa
+  become: yes
   ansible.builtin.shell: |
     # download
     curl -s https://api.github.com/repos/dbeaver/dbeaver/releases/latest \
       | grep browser_download_url \
       | grep linux | grep -v nojdk \
-      | cut -d '"' -f 4
+      | cut -d '"' -f 4 \
       | wget -P ~/Downloads -qi -
     
     # descompacta em '/opt'  

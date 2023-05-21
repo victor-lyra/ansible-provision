@@ -56,7 +56,7 @@
     curl -s https://api.github.com/repos/kingToolbox/WindTerm/releases/latest \
       | grep browser_download_url \
       | grep Linux \ 
-      | cut -d '"' -f 4
+      | cut -d '"' -f 4 \
       | wget -P ~/Downloads -qi -
     
     # descompacta em '/opt'  

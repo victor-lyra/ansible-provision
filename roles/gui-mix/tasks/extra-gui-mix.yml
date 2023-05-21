@@ -41,10 +41,11 @@
     cp -s /opt/WindTerm*/WindTerm /usr/bin/windterm
   when: windterm_instalado.matched < 1
   
-- name: extra_gui-mix | DBeaver | Verifica se download realizado
+- name: extra_gui-mix | DBeaver | Verifica se instalado
   find:
-    paths: "{{ usuario_home }}/Downloads/"
-    patterns: 'dbeaver-ce*.tar.gz'
+    paths: "/usr/bin"
+    patterns: 'dbeaver*'
+    file_type: "link"
   register: dbeaver_download
   
 - name: extra_gui-mix | DBeaver | Instalação completa

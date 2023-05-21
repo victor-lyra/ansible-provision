@@ -9,11 +9,11 @@
     state: directory
     mode: '0755'
 
-- name: extra_gui-mix | WindTerm | Verifica se download realizado
+- name: extra_gui-mix | WindTerm | Verifica se instalado
   find:
-    paths: "{{ usuario_home }}/Downloads/"
-    patterns: 'WindTerm*.tar.gz'
-  register: windterm_download
+    paths: "/usr/bin/"
+    patterns: 'windterm'
+  register: windterm_instalado
   
 - name: extra_gui-mix | Windterm | Instalação completa
   ansible.builtin.shell: |
@@ -27,8 +27,6 @@
     # descompacta em '/opt'  
     gtar -xf ~/Downloads/WindTerm*.tar.gz -C /opt
 
-    chown -R root:root /opt/Windterm*
-
     chmod 755 /opt/WindTerm*/WindTerm
     
     # copia arquivo 'desktop' para '/usr/share/applications'
@@ -36,7 +34,7 @@
     
     # cria 'link' simbólico em '/usr/bin/'
     cp -s /opt/WindTerm*/WindTerm /usr/bin/windterm
-  when: windterm_download.matched < 1
+  when: windterm_instalado.matched < 1
   
 - name: extra_gui-mix | DBeaver | Verifica se download realizado
   find:

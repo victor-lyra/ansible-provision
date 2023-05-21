@@ -14,6 +14,10 @@
     paths: "/usr/bin/"
     patterns: 'windterm'
   register: windterm_instalado
+
+- name: msg debug
+  debug: 
+    var: windterm_instalado
   
 - name: extra_gui-mix | Windterm | Instalação completa
   ansible.builtin.shell: |

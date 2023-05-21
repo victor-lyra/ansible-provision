@@ -26,6 +26,10 @@
     
     # descompacta em '/opt'  
     gtar -xf ~/Downloads/WindTerm*.tar.gz -C /opt
+
+    chown -R root:root /opt/Windterm*
+
+    chmod 755 /opt/WindTerm*/WindTerm
     
     # copia arquivo 'desktop' para '/usr/share/applications'
     cp /opt/WindTerm*/windterm.desktop /usr/share/applications

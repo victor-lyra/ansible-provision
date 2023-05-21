@@ -41,7 +41,7 @@
       | cut -d '"' -f 4 \
       | wget -P ~/.local/bin -qi -
       
-    chmod +x *.AppImage
+    chmod +x ~/.local/bin/*.AppImage
   when: appimage_download.matched < 3
 
 - name: extra_gui-mix | WindTerm | Verifica se download realizado

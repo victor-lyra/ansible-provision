@@ -77,8 +77,6 @@
 #    var: appimage_download
 
 - name: extra_gui-mix | AppImages | Download 
-  become: yes
-  become_user: "{{ usuario }}"
   ansible.builtin.shell: |
     curl -s https://api.github.com/repos/marktext/marktext/releases/latest \
       | grep browser_download_url \
@@ -100,10 +98,17 @@
       
     chmod +x ~/.local/bin/*.AppImage
   when: appimage_download.matched < 3
-  
+  become_user: "{{ usuario }}"  
+
+- name: extra_gui-mix | Packet Tracer | Cria diretório para clone de repositório
+  ansible.builtin.file:
+    path: "{{ usuario_home }}/Downloads/packet-tracer-fedora"
+    state: directory
+    mode: '0755'
+  become_usr: "{{ usuario }}"
+
 - name: extra_gui-mix | Packet Tracer | scripts para instalação
-  become: yes
-  become_user: "{{ usuario }}"
   ansible.builtin.git:
     repo: 'https://github.com/thiagoojack/packettracer-fedora.git'
     dest: "{{ usuario_home }}/Downloads/"
+  become_user: "{{ usuario }}"

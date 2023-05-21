@@ -52,6 +52,7 @@
   
 - name: extra_gui-mix | Windterm | Instalação completa
   become: yes
+  become_usr: root
   ansible.builtin.shell: |
     # download
     curl -s https://api.github.com/repos/kingToolbox/WindTerm/releases/latest \

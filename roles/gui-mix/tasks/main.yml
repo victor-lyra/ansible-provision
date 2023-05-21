@@ -129,4 +129,4 @@
 
 # outras instalações: AppImage, tarballs etc
 
-#- include_tasks: extra-gui-mix.yml      
+- include_tasks: extra-gui-mix.yml

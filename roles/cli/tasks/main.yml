@@ -84,6 +84,7 @@
       - kitty-terminfo  # terminfo file for Kitty Terminal
       - mpv             # movie player
       - snapper         # filesystem snapshot management
+      - tmux            # terminal multiplexer
       
       # cockpit
       - cockpit            # web console
@@ -135,4 +136,25 @@
   ansible.builtin.dnf:
     name: '@virtualization'
     state: present
-    
+
+- name: cli | Verifica pré-configuração para 'root'
+  find:
+    paths: "/root"
+    patterns: '.bashrc,.zshrc,.aliases,.fzf.*'
+    file_type: "link"
+  register: root_config
+
+- name: cli | Mantém mesmo ambiente para 'root'
+  shell: |
+    # cria links simbólicos em /root
+    cp -s /home/victor/.bashrc /root/.bashrc
+    cp -s /home/victor/.zshrc /root/.zshrc
+    cp -s /home/victor/.aliases /root/.aliases
+    cp -s /home/victor/.fzf /root/.fzf.zsh
+    cp -s /home/victor/.fzf /root/.fzf.bash
+    cp -s /home/victor/.config/starship.toml /root/.config/starship.toml
+
+    # copia configuracoes dos terminais para 'root'
+    cp -r /home/victor/.config/alacritty /root/.config/alacritty
+    cp -r /home/victor/.config/kitty /root/.config/kitty
+  when: root_config.matched < 5

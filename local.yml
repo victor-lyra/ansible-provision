@@ -17,11 +17,12 @@
 
   roles:
 #    - no-tnx            # desinstala programas padrão não usados
-    - cli               # em geral, programas de linha de comando
+#    - cli               # em geral, programas de linha de comando
 #    - perifericos       # configuracoes de teclado, monitor
 #    - gui-core          # itens basicos para demais roles (wallpaper, fontes...)
 #    - gui-xfce          # configuracoes para XFCE4
 #    - gui-mix           # editores, navegadores, entre outras ferramentas do ambiente gráfico
+    - gui-qtile         # tile window manager qtile e programas usados nesse ambiente
 
   # tarefas que deve ser executadas ao final de todas as demais
   post_tasks:

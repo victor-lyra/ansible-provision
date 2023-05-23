@@ -122,4 +122,6 @@ fi
 [[ -f ~/.aliases ]] && . ~/.aliases
 
 ## keychain (https://wiki.archlinux.org/title/SSH_keys#Keychain)
-eval $(keychain --eval --quiet --nogui ~/.ssh/id_ed25519)
+if [[ $USER == "victor" ]]; then
+  eval $(keychain --eval --quiet --nogui ~/.ssh/id_ed25519)
+fi

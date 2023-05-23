@@ -1,0 +1,26 @@
+# https://copr.fedorainfracloud.org/coprs/frostyx/qtile/
+- name: gui-qtile | qtile | Habilita repositório 'copr'
+  community.general.copr:
+    name: frostyx/qtile
+
+# http://www.qtile.org
+- name: gui-qtile | qtile | Instala TWM Qtile
+  ansible.builtin.dnf:
+    name:
+      - qtile
+      - qtile-extras
+
+- name: gui-qtile | qtile | Instala demais pacotes que completam o ambiente
+  ansible.builtin.dnf:
+    name:
+      - dmenu     # menu for X
+      - rofi      # window switcher, application launcher and dmenu replacement
+      - feh       # command line image viewer; wallpaper setter
+      - gpick     # color picker
+      - xrandr    # change output properties for an X screen
+      - arandr    # GTK+ XRandR GUI
+      - dunst     # notification-daemon
+      - maim      # Command-line screen capture tool
+      - picom     # Lightweight compositor for X11
+
+      # i3lock-color, betterlockscreen, ksuperkey, flameshot (?)

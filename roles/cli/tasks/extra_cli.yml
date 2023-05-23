@@ -13,7 +13,6 @@
 #    var: find_matches
 
 - name: extra_cli | Download de binários pré-compilados
-  become: yes
   become_user: "{{ usuario }}"
   ansible.builtin.shell: |
     curl -s https://api.github.com/repos/orf/gping/releases/latest \
@@ -95,7 +94,6 @@
 
 # nvchad (https://github.com/NvChad/NvChad)
 - name: extra_cli | NvChad | git clone
-  become: yes
   become_user: "{{ usuario }}"
   ansible.builtin.git:
     repo: 'https://github.com/NvChad/NvChad.git'
@@ -120,7 +118,6 @@
     replace: oceanic-next
     
 - name: extra_cli | bat | generate config file
-  become: yes
   become_user: "{{ usuario }}"
   command: bat --generate-config-file
 
@@ -139,7 +136,6 @@
   when: bat_themes_dir.stat.exists == false
 
 - name: extra_cli | bat | Download temas Catppuccin
-  become: yes
   become_user: "{{ usuario }}"
   ansible.builtin.get_url:
     url: "{{ item }}"
@@ -155,7 +151,6 @@
     - https://raw.githubusercontent.com/catppuccin/bat/main/Catppuccin-mocha.tmTheme            
 
 - name: extra_cli | bat | reconstrução do cache
-  become: yes
   become_user: "{{ usuario }}"
   command: bat cache --build
  

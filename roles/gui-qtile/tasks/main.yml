@@ -10,7 +10,35 @@
       - qtile
       - qtile-extras
 
-- name: gui-qtile | qtile | Instala demais pacotes que completam o ambiente
+# https://copr.fedorainfracloud.org/coprs/jstanek/ports/
+- name: gui-qtile | i3lock-color | Habilita repositório 'copr'
+  community.general.copr:
+    name: jstanek/ports
+
+# https://github.com/Raymo111/i3lock-color
+- name: gui-qtile | qtile | Instala pacote
+  ansible.builtin.dnf:
+    name:
+      - i3lock-color     # required - i3lock with color functionality and other features
+
+- name: gui-qtile | i3lock-color | Remove repositório 'copr'
+  community.general.copr:
+    name: jstanek/ports
+    state: absent
+
+# https://copr.fedorainfracloud.org/coprs/jstanek/ports/
+- name: gui-qtile | betterlockscreen | Habilita repositório 'copr'
+  community.general.copr:
+    name: balamurali27/betterlockscreen
+
+# https://github.com/betterlockscreen/betterlockscreen
+- name: gui-qtile | betterlockscreen | Instala pacote
+  ansible.builtin.dnf:
+    name:
+      - xdpyinfo          # required - prints basic diagnostic information about a given X server
+      - betterlockscreen
+
+- name: gui-qtile | TWM | Instala demais pacotes que completam o ambiente
   ansible.builtin.dnf:
     name:
       - dmenu     # menu for X
@@ -23,4 +51,39 @@
       - maim      # Command-line screen capture tool
       - picom     # Lightweight compositor for X11
 
-      # i3lock-color, betterlockscreen, ksuperkey, flameshot (?)
+- name: gui-qtile | ksuperkey | Dependências
+  ansible.builtin.dnf:
+    name:
+      - git
+      - gcc
+      - make
+      - libX11-devel
+      - libXtst-devel
+      - pkgconfig
+
+- name: gui-qtile| ksuperkey | Cria diretório para clone de repositório
+  ansible.builtin.file:
+    path: "{{ usuario_home }}/Downloads/ksuperkey"
+    state: directory
+    mode: '0755'
+  become_user: "{{ usuario }}"
+
+- name: gui-qtile | ksuperkey | clone do repositório
+  ansible.builtin.git:
+    repo: 'https://github.com/hanschen/ksuperkey.git'
+    dest: "{{ usuario_home }}/Downloads/ksuperkey"
+  become_user: "{{ usuario }}"
+
+- name: gui-qtile | Verifica se download realizado
+  find:
+    paths: "/usr/bin"
+    patterns: 'ksuperkey'
+  register: ksuperkey_instalado
+
+- name: gui-qtile | ksuperkey | Instala
+  ansible.builtin.shell: |
+    cd $HOME/Downloads/ksuperkey
+    make
+    make install
+  when: ksuperkey_instalado.matched < 1
+

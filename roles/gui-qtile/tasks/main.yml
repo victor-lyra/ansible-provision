@@ -83,7 +83,7 @@
 
 - name: gui-qtile | ksuperkey | Instala
   ansible.builtin.shell: |
-    cd $HOME/Downloads/ksuperkey
+    cd /home/$SUDO_USER/Downloads/ksuperkey
     make
     make install
   when: ksuperkey_instalado.matched < 1

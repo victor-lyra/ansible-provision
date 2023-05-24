@@ -36,8 +36,8 @@
 - name: gui-mix | Vivaldi | Adiciona repositório 
   yum_repository:
     name: vivaldi
-    description: Sublime Text Editor Repository
-    file: sublime
+    description: Vivaldi Browser Repository
+    file: vivaldi
     baseurl: https://repo.vivaldi.com/archive/rpm/x86_64
     state: present
     enabled: true

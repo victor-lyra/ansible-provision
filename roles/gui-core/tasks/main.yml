@@ -9,7 +9,6 @@
 #    var: fontes_download
 
 - name: fontes | Download do NerdFonts
-  become: yes
   become_user: "{{ usuario }}"
   ansible.builtin.shell: |
     curl -s https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest \

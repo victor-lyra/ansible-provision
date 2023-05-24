@@ -20,23 +20,24 @@
   ansible.builtin.dnf:
     name:
       - i3lock-color     # required - i3lock with color functionality and other features
+      - xdpyinfo          # required - prints basic diagnostic information about a given X server
 
 - name: gui-qtile | i3lock-color | Remove repositório 'copr'
   community.general.copr:
     name: jstanek/ports
     state: absent
 
-# https://copr.fedorainfracloud.org/coprs/jstanek/ports/
-- name: gui-qtile | betterlockscreen | Habilita repositório 'copr'
-  community.general.copr:
-    name: balamurali27/betterlockscreen
+- name: gui-qtile | betterlockscreen | Verifica se instalado
+  find:
+    paths: "/usr/bin"
+    patterns: 'betterlockscreen'
+  register: betterlockscreen_instalado
 
 # https://github.com/betterlockscreen/betterlockscreen
 - name: gui-qtile | betterlockscreen | Instala pacote
-  ansible.builtin.dnf:
-    name:
-      - xdpyinfo          # required - prints basic diagnostic information about a given X server
-      - betterlockscreen
+  ansible.builtin.shell: |
+    wget https://raw.githubusercontent.com/betterlockscreen/betterlockscreen/main/install.sh -O - -q | sudo bash -s system
+  when: betterlockscreen_instalado.matched < 1
 
 - name: gui-qtile | TWM | Instala demais pacotes que completam o ambiente
   ansible.builtin.dnf:

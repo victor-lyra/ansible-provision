@@ -77,6 +77,7 @@
       - wireshark
 
       # mix
+      - file-roller                     # manage archives
       - copyq                           # clipboard manager (substitui 'xclipboard')
       - lightdm-gtk-greeter-settings    # Settings editor for LightDM GTK+ Greeter
       - foliate                         # GTK eBook reader

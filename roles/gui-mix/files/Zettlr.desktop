@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Zettlr
+Exec=/opt/Zettlr/Zettlr %U
+Terminal=false
+Type=Application
+Icon=Zettlr
+StartupWMClass=zettlr
+Comment=A Markdown Editor for the 21st century.
+MimeType=text/markdown;text/markdown;text/markdown;
+Categories=Office;

@@ -1,8 +1,10 @@
 # MarkText (https://github.com/marktext/marktext): markdown editor
 # Obsidian (https://github.com/obsidianmd/obsidian-releases): markdown editor
+# Zettlr (https://www.zettlr.com): markdown editor
 # Motrix (https://github.com/agalwood/Motrix): download manager
 # WindTerm (https://github.com/kingToolbox/WindTerm): ssh/sftp/shell/telnet/serial terminal
 # DBeaver (https://github.com/dbeaver/dbeaver): database tool
+
 - name: extra_gui-mix | Cria diretório '/opt' caso não exista
   ansible.builtin.file:
     path: /opt
@@ -99,10 +101,27 @@
       | grep AppImage | grep -v arm \
       | cut -d '"' -f 4 \
       | wget -P ~/.local/bin -qi -
+
+    curl -s https://api.github.com/repos/Zettlr/Zettlr/releases/latest \
+      | grep browser_download_url \
+      | grep AppImage \
+      | grep x86_64 \
+      | cut -d '"' -f 4 \
+      | wget -P ~/.local/bin -qi -
       
     chmod +x ~/.local/bin/*.AppImage
-  when: appimage_download.matched < 3
+  when: appimage_download.matched < 4
   become_user: "{{ usuario }}"  
+
+- name: extra_gui-mix | AppImages | .desktop files
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "{{ usuario_home }}/.local/share/applications"
+  with_items: 
+    - marktext.desktop
+    - motrix.desktop
+    - obsidian.desktop
+    - Zettlr.desktop
 
 - name: extra_gui-mix | Packet Tracer | Cria diretório para clone de repositório
   ansible.builtin.file:

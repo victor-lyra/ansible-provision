@@ -1,0 +1,5 @@
+[Desktop Entry]
+Exec=/home/victor/.local/bin/Motrix-1.8.19.AppImage
+Type=Application
+Categories=Download-Manager
+Name=Motrix

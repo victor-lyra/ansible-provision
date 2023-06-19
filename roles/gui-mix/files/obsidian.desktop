@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=Obsidian
+Exec=/home/victor/.local/bin/Obsidian-1.2.8.AppImage %u
+Type=Application
+StartupWMClass=obsidian
+Icon=obsidian
+Terminal=false
+Comment=Obsidian
+MimeType=x-scheme-handler/obsidian;
+Categories=Office;
+TryExec=/home/victor/.local/bin/Obsidian-1.2.8.AppImage

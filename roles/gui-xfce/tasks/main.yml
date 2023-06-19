@@ -1,16 +1,15 @@
-- name: Garante existência do pacote xfconf
+- name: gui-xfce | xfconf | Garante existência do pacote
   dnf:
     name: xfconf
     state: present
   when: ansible_facts['distribution'] == "Fedora"
 
-- name: Esconde ícones do desktop
-  become: yes
+- name: gui-xfce | xfconf | Esconde ícones do desktop
   become_user: "{{ usuario }}"
   command:
     cmd: xfconf-query -c xfce4-desktop -p /desktop-icons/style --type int --set 0
 
-- name: Define CSS do GTK3.0
+- name: gui-xfce | gtk3.0 | Define CSS
   copy:
     src: themes/gtk.css
     dest: "{{ usuario_config }}/gtk-3.0/gtk.css"
@@ -18,7 +17,7 @@
     group: "{{ usuario }}"
     mode: "0644"
 
-- name: Copia *profiles* do 'xfce4-panel'
+- name: gui-xfce | xfce4-panel | Copia *profiles*
   copy:
     src: '{{item}}'
     dest: "{{ usuario_home }}/.local/share/xfce4-panel-profiles"
@@ -29,14 +28,12 @@
     - panel-profile-solo-monitor.tar.bz2
     - panel-profile-dual-monitor.tar.bz2
 
-- name: Garante existência do pacote xrandr
+- name: gui-xfce | Garante existência do pacote xrandr
   dnf:
     name: xrandr
     state: present
-  when: ansible_facts['distribution'] == "Fedora"
 
-- name: Define o *profile* do 'xfce4-panel' conforme quantitativo de monitores
-  become: yes
+- name: gui-xfce | xfce4-panel | Define o *profile* conforme quantitativo de monitores
   become_user: "{{ usuario }}"
   shell: |
     if xrandr --listactivemonitors | grep -i monitors | awk '{print $2}' > 1; then
@@ -49,7 +46,7 @@
 - debug:
     var: xfce4_panel_check.stdout
 
-- name: Script para definição de *wallpapers*
+- name: gui-xfce | wallpapers | Script para definição no 'autostart' do ambiente
   copy:
     src: "{{ item }}"
     dest: "{{ usuario_config }}/autostart/"
@@ -58,52 +55,63 @@
   with_fileglob:
     - "set-wallpaper/*"
 
-- name: Copia tema para janelas
+- name: gui-xfce | Copia tema para janelas
   unarchive:
     src: themes/window/GTK-XFWM-Theme.zip
     dest: /usr/share/themes/
 
-- name: Define tema para GTK (Appearance)
-  become: yes
+- name: gui-xfce | xfconf | Define tema para GTK (Appearance)
   become_user: "{{ usuario }}"
   command: "xfconf-query -c xsettings -p /Net/ThemeName -s Everblush"
 
-- name: Define tema para Xfwm (Window Manager)
-  become: yes
+- name: gui-xfce | xfconf | Define tema para Xfwm (Window Manager)
   become_user: "{{ usuario }}"
   command: "xfconf-query -c xfwm4 -p /general/theme -s Everblush-xfwm"
 
-- name: Copia tema para ícones
+- name: gui-xfce | Copia tema para ícones
   unarchive:
     src: themes/icon/Nordzy-cyan-dark-MOD.zip
     dest: /usr/share/icons/
 
-- name: Define tema dos ícones
-  become: yes
+- name: gui-xfce | xfconf | Define tema dos ícones
   become_user: "{{ usuario }}"
   command: "xfconf-query -c xsettings -p /Net/IconThemeName -s Nordzy-cyan-dark-MOD"
 
-- name: Copia tema para cursor do mouse
+- name: gui-xfce | Copia tema para cursor do mouse
   unarchive:
     src: themes/cursor/Bibata-Modern-Ice.tar.gz
     dest: /usr/share/icons/
 
-- name: Define tema do cursor do mouse
-  become: yes
+- name: gui-xfce | xfconf | Define tema do cursor do mouse
   become_user: "{{ usuario }}"
   command: "xfconf-query -c xsettings -p /Gtk/CursorThemeName -s Bibata-Modern-Ice"
 
-- name: Define tema do cursor do mouse (default)
+- name: gui-xfce | Define tema do cursor do mouse (default)
   lineinfile: 
     path: /usr/share/icons/default/index.theme
     search_string: 'Inherits='
     line: Inherits=Bibata-Modern-Ice
 
-- name: Configurações personalizadas para o xfce4-terminal
-  become: yes
+# https://github.com/AlexisBRENON/ewmh_m2m
+# usado no atalho para movimentar janelas pelos monitores presentes
+- name: gui-xfce | ewmh_m2m | Instalação do comando 'move-to-monitor'
+  ansible.builtin.pip:
+    name: ewmh-m2m    
+
+- name: gui-xfce | xfce4-terminal | Configurações personalizadas
   become_user: "{{ usuario }}"
   copy:
-    src: terminal/terminalrc
-    dest: "{{ usuario_config }}/xfce4/terminal/terminalrc"
+    src: "{{ item }}"
+    dest: "{{ usuario_config }}/xfce4/xfconf/xfce-perchannel-xml/"
     mode: "0644"
+  with_items: 
+    - xfce4-keyboard-shortcuts.xml
+    - xfwm4.xml
+    - xsettings.xml
 
+- name: gui-xfce | Thunar actions | Configurações personalizadas
+  become_user: "{{ usuario }}"
+  copy:
+    src: uca.xml
+    dest: "{{ usuario_config }}/Thunar/uca.xml"
+    mode: "0644"

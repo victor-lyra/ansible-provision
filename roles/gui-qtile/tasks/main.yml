@@ -88,3 +88,6 @@
     make install
   when: ksuperkey_instalado.matched < 1
 
+# outras configurações: dotfiles
+
+- include_tasks: extra-config.yml

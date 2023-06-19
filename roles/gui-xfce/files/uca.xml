@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+<action>
+	<icon>utilities-terminal</icon>
+	<name>Open Terminal Here</name>
+	<unique-id>1679516750052992-1</unique-id>
+	<command>exo-open --working-directory %f --launch TerminalEmulator</command>
+	<description>Open default Terminal Emulator</description>
+	<patterns>*</patterns>
+	<startup-notify/>
+	<directories/>
+</action>
+<action>
+	<icon>kitty</icon>
+	<name>Kitty</name>
+	<unique-id>1581593230771688-1</unique-id>
+	<command>~/.local/bin/kitty</command>
+	<description>Open terminal emulator Kitty</description>
+	<patterns>*</patterns>
+	<startup-notify/>
+	<directories/>
+</action>
+<action>
+	<icon>channel-secure</icon>
+	<name>Open as root</name>
+	<unique-id>1622790717174452-1</unique-id>
+	<command>~/.config/rofi/bin/apps_as_root &apos;dbus-run-session thunar&apos;</command>
+	<description>Open directory as root</description>
+	<patterns>*</patterns>
+	<directories/>
+</action>
+<action>
+	<icon>channel-secure</icon>
+	<name>Edit as root</name>
+	<unique-id>1622790919788057-2</unique-id>
+	<command>~/.config/rofi/bin/apps_as_root &apos;mousepad %f&apos;</command>
+	<description>Edit file as root</description>
+	<patterns>*</patterns>
+	<text-files/>
+</action>
+<action>
+	<icon>kdiff3</icon>
+	<name>Compare</name>
+	<unique-id>1622791692322694-4</unique-id>
+	<command>meld %F</command>
+	<description>Compare files and directories with Meld</description>
+	<patterns>*</patterns>
+	<directories/>
+	<text-files/>
+</action>
+<action>
+	<icon>baobab</icon>
+	<name>Disk Usage</name>
+	<unique-id>1622791401529558-3</unique-id>
+	<command>baobab %d</command>
+	<description>Disk usages by directory and its sub directories</description>
+	<patterns>*</patterns>
+	<directories/>
+	<audio-files/>
+	<image-files/>
+	<other-files/>
+	<text-files/>
+	<video-files/>
+</action>
+</actions>

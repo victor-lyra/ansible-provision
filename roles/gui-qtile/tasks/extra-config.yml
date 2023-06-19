@@ -1,0 +1,125 @@
+- name: qtile-extra-config | betterlockscreen | Verifica se diretório existe
+  stat:
+    path: "{{ usuario_config }}/betterlockscreen"
+  register: betterlockscreen_dir
+
+- name: qtile-extra-config | dunst | Verifica se diretório existe
+  stat:
+    path: "{{ usuario_config }}/dunst"
+  register: dunst_dir
+
+- name: qtile-extra-config | dunst (/usr/share) | Verifica se diretório existe
+  stat:
+    path: "/usr/share/dunst"
+  register: dunst_usr_share_dir
+
+- name: qtile-extra-config | gh | Verifica se diretório existe
+  stat:
+    path: "{{ usuario_config }}/gh"
+  register: gh_dir
+
+- name: qtile-extra-config | qtile | Verifica se diretório existe
+  stat:
+    path: "{{ usuario_config }}/qtile"
+  register: qtile_dir
+
+- name: qtile-extra-config | rofi | Verifica se diretório existe
+  stat:
+    path: "{{ usuario_config }}/rofi"
+  register: rofi_dir
+
+- name: qtile-extra-config | picom | Verifica se diretório existe
+  stat:
+    path: "{{ usuario_config }}/picom"
+  register: picom_dir
+
+- name: qtile-extra-config | screenlayout | Verifica se diretório existe
+  stat:
+    path: "{{ usuario_home }}/.screenlayout"
+  register: screenlayout_dir
+
+- name: qtile-extra-config | local-bin | Verifica se script 'takeshot' existe
+  stat:
+    path: "{{ usuario_home }}/.local/bin/takeshot"
+  register: takeshot_file
+
+- name: qtile-extra-config | networkmanager-dmenu | Verifica se script existe
+  stat:
+    path: "{{ usuario_home }}/.local/bin/networkmanager-dmenu"
+  register: nmd_file
+
+- name: qtile-extra-config | betterlockscreen | Descompacta 'betterlockscreen.tar.gz'
+  ansible.builtin.unarchive:
+    src: betterlockscreen.tar.gz
+    dest: "{{ usuario_config }}"
+  become_user: "{{ usuario }}"
+  when: not betterlockscreen_dir.stat.exists
+
+- name: qtile-extra-config | dunst | Descompacta 'dunst.tar.gz'
+  ansible.builtin.unarchive:
+    src: dunst.tar.gz
+    dest: "{{ usuario_config }}"
+  become_user: "{{ usuario }}"
+  when: not dunst_dir.stat.exists
+
+- name: qtile-extra-config | dunst (/usr/share) | Descompacta 'usr.share.dunst.tar.gz'
+  ansible.builtin.unarchive:
+    src: usr.share.dunst.tar.gz
+    dest: "/usr/share"
+  when: not dunst_usr_share_dir.stat.exists
+
+- name: qtile-extra-config | gh | Descompacta 'gh.tar.gz'
+  ansible.builtin.unarchive:
+    src: gh.tar.gz
+    dest: "{{ usuario_config }}"
+  become_user: "{{ usuario }}"
+  when: not gh_dir.stat.exists
+
+- name: qtile-extra-config | qtile | Descompacta 'qtile.tar.gz'
+  ansible.builtin.unarchive:
+    src: qtile.tar.gz
+    dest: "{{ usuario_config }}"
+  become_user: "{{ usuario }}"
+  when: not qtile_dir.stat.exists
+
+- name: qtile-extra-config | rofi | Descompacta 'rofi.tar.gz'
+  ansible.builtin.unarchive:
+    src: rofi.tar.gz
+    dest: "{{ usuario_config }}"
+  become_user: "{{ usuario }}"
+  when: not rofi_dir.stat.exists
+
+- name: qtile-extra-config | picom | Descompacta 'picom.tar.gz'
+  ansible.builtin.unarchive:
+    src: picom.tar.gz
+    dest: "{{ usuario_config }}"
+  become_user: "{{ usuario }}"
+  when: not picom_dir.stat.exists
+
+- name: qtile-extra-config | screenlayout | Descompacta 'screenlayout.tar.gz'
+  ansible.builtin.unarchive:
+    src: screenlayout.tar.gz
+    dest: "{{ usuario_home }}"
+  become_user: "{{ usuario }}"
+  when: not screenlayout_dir.stat.exists
+
+- name: qtile-extra-config | screenlayout | Configura LightDM para usar screenlayout
+  ansible.builtin.lineinfile:
+    path: /etc/lightdm/lightdm.conf
+    search_string: '#display-setup-script='
+    line: display-setup-script=/home/victor/.screenlayout/monitors
+
+- name: qtile-extra-config | local-bin | Descompacta 'local-bin.tar.gz'
+  ansible.builtin.unarchive:
+    src: local-bin.tar.gz
+    dest: "{{ usuario_home }}/.local/bin"
+  become_user: "{{ usuario }}"
+  when: not takeshot_file.stat.exists
+
+#https://github.com/firecat53/networkmanager-dmenu
+- name: qtile-extra-config | networkmanager_dmenu | Descompacta 'nmd.tar.gz'
+  ansible.builtin.unarchive:
+    src: nmd.tar.gz
+    dest: "{{ usuario_home }}"
+  become_user: "{{ usuario }}"
+  when: not nmd_file.stat.exists

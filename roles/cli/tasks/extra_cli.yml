@@ -203,4 +203,4 @@
 # https://github.com/mps-youtube/yewtube    
 - name: extra_cli | yewtube | Instalação
   ansible.builtin.pip:
-    name: yewtube    
+    name: yewtube

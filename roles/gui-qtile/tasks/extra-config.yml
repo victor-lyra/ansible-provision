@@ -33,10 +33,10 @@
     path: "{{ usuario_config }}/picom"
   register: picom_dir
 
-- name: qtile-extra-config | screenlayout | Verifica se diretório existe
-  stat:
-    path: "{{ usuario_home }}/.screenlayout"
-  register: screenlayout_dir
+#- name: qtile-extra-config | screenlayout | Verifica se diretório existe
+#  stat:
+#    path: "{{ usuario_home }}/.screenlayout"
+#  register: screenlayout_dir
 
 - name: qtile-extra-config | local-bin | Verifica se script 'takeshot' existe
   stat:
@@ -82,6 +82,12 @@
   become_user: "{{ usuario }}"
   when: not qtile_dir.stat.exists
 
+# usa a variavel net_card
+- name: qtile-extra-config | Recria 'screens.py' usando template e variável global
+  template:
+    src: templates/screens.j2
+    dest: "{{ usuario_config }}/qtile/settings/screens.py"
+
 - name: qtile-extra-config | rofi | Descompacta 'rofi.tar.gz'
   ansible.builtin.unarchive:
     src: rofi.tar.gz
@@ -96,12 +102,24 @@
   become_user: "{{ usuario }}"
   when: not picom_dir.stat.exists
 
-- name: qtile-extra-config | screenlayout | Descompacta 'screenlayout.tar.gz'
-  ansible.builtin.unarchive:
-    src: screenlayout.tar.gz
-    dest: "{{ usuario_home }}"
-  become_user: "{{ usuario }}"
-  when: not screenlayout_dir.stat.exists
+#- name: qtile-extra-config | screenlayout | Descompacta 'screenlayout.tar.gz'
+#  ansible.builtin.unarchive:
+#    src: screenlayout.tar.gz
+#    dest: "{{ usuario_home }}"
+#  become_user: "{{ usuario }}"
+#  when: not screenlayout_dir.stat.exists
+
+- name: qtile-extra-config | Cria diretório "{{ usuario_home }}/.screenlayout" caso não exista
+  ansible.builtin.file:
+    path: "{{ usuario_home }}/.screenlayout"
+    state: directory
+    mode: '0755'
+
+# usa as variaveis monitor_1, monitor_1_res, monitor_2, monitor_2_res
+- name: qtile-extra-config | Cria script 'monitors' a partir do template e variáveis globais
+  template:
+    src: templates/monitors.j2
+    dest: "{{ usuario_home }}/.screenlayout/monitors"
 
 - name: qtile-extra-config | screenlayout | Configura LightDM para usar screenlayout
   ansible.builtin.lineinfile:

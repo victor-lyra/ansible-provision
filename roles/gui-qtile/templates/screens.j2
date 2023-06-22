@@ -1,0 +1,397 @@
+import os
+from libqtile import bar, widget, qtile
+from libqtile.config import Screen
+
+from .colors import colors
+
+def taskListText(text):
+    for string in ["Vivaldi", "Firefox", "Sublime", 'Thunar', 'Imagens']: #Add any other apps that have long names here
+        if string in text:
+            text = string.replace('Imagens','')
+    text = ' ' + text
+    return text
+
+decor = {
+    "background": colors['background'],
+    "borderwidth": 1,
+    "padding": 5,
+    "highlight_method": 'line',
+    "rounded": False,
+    "disable_drag": True,
+    "inactive": colors['comment'],
+    "active": '#7dbae4',#colors['white'],
+    "highlight_color": colors['background'], #['000000', '282828'], 
+    "this_current_screen_border": colors['mood'], #colors['red'],
+    "block_highlight_text_color": colors['mood'], #colors['red'],
+    # "this_screen_border": colors['foreground'],
+    "other_current_screen_border": colors['background'],
+    "other_screen_border": colors['background'],
+    # "this_screen_border": colors['foreground'],
+    # "decorations": [
+    #        RectDecoration(
+    #               use_widget_background=True,
+    #               radius=17,
+    #               filled=True,
+    #               colour = colors['background'],
+    #               padding_y = 5
+    #               )
+    #        ],
+}
+
+screens = [
+    Screen(
+        #wallpaper='Pictures/Wallpaper/arch.jpg',
+        #wallpaper_mode='fill',
+        top=bar.Bar(
+            [
+                widget.Image(
+                    filename = "/home/victor/.config/qtile/icon/fedora-icon-2.png",
+                    scale = "True",
+                    mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('xfce4-terminal')},
+                    padding=10
+                ),
+                widget.GroupBox(
+                    **decor,
+                    font='Hack Nerd Font Bold',
+                    fontsize=10,
+                    hide_unused=True,
+                ),
+                widget.TextBox(
+                    text='',
+                    background=colors['current_line'],
+                    foreground=colors['background'],
+                    padding=0,
+                    fontsize=25
+                ),
+                widget.DF(
+                    font="Hack Nerd Font",
+                    fontsize=12,
+                    foreground=colors['mood'],
+                    mouse_callbacks={'Button1': lambda: qtile.cmd_spawn('kitty sh -c "df -h; read"')},
+                    fmt='{}',
+                    padding=10,
+                    visible_on_warn = False,
+                    format = '󰒋' + ' {r:.0f}%',
+                    #fontshadow=colors['black'],
+                ),
+                widget.Memory(
+                    font="Hack Nerd Font",
+                    fontsize=12,
+                    foreground=colors['mood'],
+                    mouse_callbacks={'Button1': lambda: qtile.cmd_spawn('kitty sh -c "\\free -mt; read"')},
+                    #measure_mem='G',
+                    fmt='' + '{}',
+                    padding=10,
+                ),
+                widget.CPU(
+                    font="Hack Nerd Font",
+                    fontsize=12,
+                    foreground=colors['mood'],
+                    format='󰍛' + ' {load_percent}%',
+                    mouse_callbacks={'Button1': lambda: qtile.cmd_spawn(
+                        "alacritty" + ' -e htop')},
+                    padding=10,
+                    max_chars=5
+                ),
+                widget.TaskList(
+                    highlight_method='block',
+                    #border=colors['current_line'],
+                    #max_title_width=20,
+                    icon_size=12,
+                    parse_text=taskListText,
+                    padding=0,
+                    font="Hack Nerd Font",
+                    fontsize=10,
+                    foreground=colors['mood'],
+                    #background = colors['background'],
+                ),                                    
+                # widget.Spacer(
+                #     length=bar.STRETCH,
+                # ),
+
+                widget.Net(
+                    interface = "{{ net_card }}",
+                    #prefix='M',
+                    format = '󰀂' + ' {down} ⮮⮭{up}',
+                    font="Hack Nerd Font",
+                    fontsize=12,
+                    foreground=colors['mood'],
+                    padding = 5,
+                    mouse_callbacks={'Button1': lambda: qtile.cmd_spawn(
+                        'nmd &')},
+                ),
+                widget.TextBox(
+                   text = '|',
+                   foreground = '474747',
+                   padding = 2,
+                   fontsize = 10
+                ),
+                widget.Volume(
+                    foreground=colors['mood'],
+                    #   foreground = colors[1],
+                    #   background = colors[7],
+                    fontsize=12,
+                    fmt = '󰕾 ' +' {}',
+                    padding = 5,
+                    mouse_callbacks={'Button1': lambda: qtile.cmd_spawn('pavucontrol'),
+                                     'Button3': lambda: qtile.cmd_spawn('kitty sh -c "alsamixer"')},
+                ),
+                widget.TextBox(
+                   text = '|',
+                   foreground = '474747',
+                   padding = 2,
+                   fontsize = 10
+                ),
+                widget.KeyboardLayout(
+                    foreground=colors['mood'],
+                    fmt = '󰌌 ' + ' {}',
+                    configured_keyboards=["us intl",'br abnt2'],
+                    #mouse_callbacks={'Button1': lambda: lazy.widget["KeyboardLayout"].next_keyboard()},
+                    padding=5,
+                ),
+                widget.TextBox(
+                   text = '|',
+                   foreground = '474747',
+                   padding = 2,
+                   fontsize = 10
+                ),
+                widget.Clock(
+                    foreground=colors['mood'],
+                    format = '%d/%m/%y %H:%M',
+                    padding=5,
+                    mouse_callbacks={'Button3': lambda: qtile.cmd_spawn('kitty --class calcurse sh -c "calcurse"'),
+                                     #'Button2': lambda: qtile.cmd_spawn('orage'),
+                                     'Button1': lambda: qtile.cmd_simulate_keypress([], "F12"), },
+                ),
+                widget.TextBox(
+                    text='',
+                    background=colors['current_line'],
+                    foreground=colors['background'],
+                    padding=0,
+                    fontsize=25
+                ),
+                widget.Systray(
+                    background=colors['background'],
+                    #icon_size=10,
+                    padding=5
+                ),
+                widget.CheckUpdates(
+                    update_interval = 180,
+                    distro = "Fedora",
+                    display_format = "󰍕",
+                    no_update_string='',
+                    # foreground = colors['red'],
+                    colour_have_updates = colors['green'],
+                    # colour_no_updates = colors['background'],
+                    mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('kitty sh -c "sudo dnf upgrade"')},
+                    padding = 3,
+                    background = colors['background'],
+                    font='Hack Nerd Font Bold',
+                    fontsize=14
+                ),
+                widget.Battery(
+                    update_interval=10,
+                    show_short_text=False,
+                    format='{char}',
+                    charge_char='󱟦',
+                    discharge_char='󱟤',
+                    empty_char='󰂎',
+                    full_char='',
+                    foreground=colors['mood'],
+                    low_foreground=colors['red'],
+                    low_percentage=0.4,
+                    background = colors['background'],
+                    padding = 5,
+                    font='Hack Nerd Font Bold',
+                    fontsize=14
+                ),                
+                widget.CurrentLayoutIcon(
+                    custom_icon_paths = [os.path.expanduser("~/.config/qtile/icon")],
+                    #foreground = colors[2],
+                    background = colors['background'],
+                    padding = 1,
+                    scale = 0.7,
+                ),                
+            ],
+            18,
+            opacity=1,
+            background=colors['current_line'],
+        ),
+    ),
+    Screen(
+        top=bar.Bar(
+            [
+                widget.Image(
+                    filename = "/home/victor/.config/qtile/icon/fedora-icon-2.png",
+                    scale = "True",
+                    mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('xfce4-terminal')}
+                ),
+                widget.GroupBox(
+                    **decor,
+                    font='Hack Nerd Font Bold',
+                    fontsize=10,
+                    hide_unused=True,
+                ),
+                widget.TextBox(
+                    text='',
+                    background=colors['current_line'],
+                    foreground=colors['background'],
+                    padding=0,
+                    fontsize=25
+                ),
+                widget.DF(
+                    font="Hack Nerd Font",
+                    fontsize=12,
+                    foreground=colors['mood'],
+                    mouse_callbacks={'Button1': lambda: qtile.cmd_spawn('kitty sh -c "df -h; read"')},
+                    fmt='{}',
+                    padding=10,
+                    visible_on_warn = False,
+                    format = '󰒋' + ' {r:.0f}%',
+                ),
+                widget.Memory(
+                    font="Hack Nerd Font",
+                    fontsize=12,
+                    foreground=colors['mood'],
+                    mouse_callbacks={'Button1': lambda: qtile.cmd_spawn('kitty sh -c "\\free -mt; read"')},
+                    #measure_mem='G',
+                    fmt='' + '{}',
+                    padding=10,
+                ),
+                widget.CPU(
+                    font="Hack Nerd Font",
+                    fontsize=12,
+                    foreground=colors['mood'],
+                    format='󰍛' + ' {load_percent}%',
+                    mouse_callbacks={'Button1': lambda: qtile.cmd_spawn(
+                        "alacritty" + ' -e htop')},
+                    padding=10,
+                    max_chars=5
+                ),
+                widget.TaskList(
+                    highlight_method='block',
+                    #border=colors['current_line'],
+                    #max_title_width=100,
+                    icon_size=12,
+                    parse_text=taskListText,
+                    padding=0,
+                    font="Hack Nerd Font",
+                    fontsize=10,
+                    foreground=colors['mood'],
+                    #background = colors['background'],
+                ),                 
+                # widget.Spacer(
+                #     length=bar.STRETCH,
+                # ),
+
+                widget.Net(
+                    interface = "{{ net_card }}",
+                    #prefix='M',
+                    format = '󰀂' + ' {down} ⮮⮭{up}',
+                    font="Hack Nerd Font",
+                    fontsize=12,
+                    foreground=colors['mood'],
+                    padding = 5,
+                    mouse_callbacks={'Button1': lambda: qtile.cmd_spawn(
+                        'nmd &')},
+                ),
+                widget.TextBox(
+                   text = '|',
+                   foreground = '474747',
+                   padding = 2,
+                   fontsize = 10
+                ),
+                widget.Volume(
+                    foreground=colors['mood'],
+                    #   foreground = colors[1],
+                    #   background = colors[7],
+                    fontsize=12,
+                    fmt = '󰕾 ' +' {}',
+                    padding = 5,
+                    mouse_callbacks={'Button1': lambda: qtile.cmd_spawn('pavucontrol'),
+                                     'Button3': lambda: qtile.cmd_spawn('kitty sh -c "alsamixer"')},
+                ),
+                widget.TextBox(
+                   text = '|',
+                   foreground = '474747',
+                   padding = 2,
+                   fontsize = 10
+                ),
+                widget.KeyboardLayout(
+                    foreground=colors['mood'],
+                    fmt = '󰌌 ' + ' {}',
+                    configured_keyboards=["us intl",'br abnt2'],
+                    #mouse_callbacks={'Button1': lambda: lazy.widget["KeyboardLayout"].next_keyboard()},
+                    padding=5,
+                ),
+                widget.TextBox(
+                   text = '|',
+                   foreground = '474747',
+                   padding = 2,
+                   fontsize = 10
+                ),
+                widget.Clock(
+                    foreground=colors['mood'],
+                    format = '%d/%m/%y %H:%M',
+                    padding=5,
+                    mouse_callbacks={'Button3': lambda: qtile.cmd_spawn('kitty --class calcurse sh -c "calcurse"'),
+                                     #'Button2': lambda: qtile.cmd_spawn('orage'),
+                                     'Button1': lambda: qtile.cmd_simulate_keypress([], "F12"), },
+                ),
+                widget.TextBox(
+                    text='',
+                    background=colors['current_line'],
+                    foreground=colors['background'],
+                    padding=0,
+                    fontsize=25
+                ),
+#                widget.Systray(
+#                    background=colors['background'],
+#                    #icon_size=10,
+#                    padding=5
+#                ),
+                widget.CheckUpdates(
+                    update_interval = 180,
+                    distro = "Fedora",
+                    display_format = "󰍕",
+                    no_update_string='',
+                    # foreground = colors['red'],
+                    colour_have_updates = colors['green'],
+                    # colour_no_updates = colors['background'],
+                    mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('kitty sh -c "sudo dnf upgrade"')},
+                    padding = 3,
+                    background = colors['background'],
+                    font='Hack Nerd Font Bold',
+                    fontsize=14
+                ),
+                widget.Battery(
+                    update_interval=10,
+                    show_short_text=False,
+                    format='{char}',
+                    charge_char='󱟦',
+                    discharge_char='󱟤',
+                    empty_char='󰂎',
+                    full_char='',
+                    foreground=colors['mood'],
+                    low_foreground=colors['red'],
+                    low_percentage=0.4,
+                    background = colors['background'],
+                    padding = 5,
+                    font='Hack Nerd Font Bold',
+                    fontsize=14
+                ),
+
+                widget.CurrentLayoutIcon(
+                    custom_icon_paths = [os.path.expanduser("~/.config/qtile/icon")],
+                    #foreground = colors[2],
+                    background = colors['background'],
+                    padding = 1,
+                    scale = 0.7,
+                ),                            
+            ],
+            18,
+            opacity=1,
+            background=colors['current_line'],
+        ),
+    ),
+]

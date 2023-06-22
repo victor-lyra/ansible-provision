@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# Get list of connected monitors
+PRIMARY="{{ monitor_1 }}"
+SECONDARY="{{ monitor_2 }}"
+
+# Get current screen layout
+LAYOUT_P="{{ monitor_1_res }}"
+LAYOUT_S="{{ monitor_2_res }}"
+
+# Define new screen configuration
+NEW_LAYOUT="--output ${PRIMARY} --primary --mode ${LAYOUT_P}"
+
+# Check if have to add a secondary monitor do screen configuration
+if [[ ! -z "${SECONDARY}" ]]; then
+  NEW_LAYOUT+=" --output ${SECONDARY} --mode ${LAYOUT_S} --right-of ${PRIMARY}" 
+fi
+
+# Apply new screen configuration
+xrandr ${NEW_LAYOUT}

@@ -120,6 +120,9 @@
   template:
     src: templates/monitors.j2
     dest: "{{ usuario_home }}/.screenlayout/monitors"
+    owner: "{{ usuario }}"
+    group: "{{ usuario }}"
+    mode: '0755'
 
 - name: qtile-extra-config | screenlayout | Configura LightDM para usar screenlayout
   ansible.builtin.lineinfile:

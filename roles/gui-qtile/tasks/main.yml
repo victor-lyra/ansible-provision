@@ -51,6 +51,7 @@
       - dunst     # notification-daemon
       - maim      # Command-line screen capture tool
       - picom     # Lightweight compositor for X11
+      - lxappearance # GTK+ theme switcher developed for LXDE (works outside a desktop environment)
 
 - name: gui-qtile | ksuperkey | Dependências
   ansible.builtin.dnf:

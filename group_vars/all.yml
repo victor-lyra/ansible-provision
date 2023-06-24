@@ -10,5 +10,6 @@ monitor_1_res: "1920x1080"
 monitor_2: "HDMI-A-1"
 monitor_2_res: "1920x1080"
 net_card: "wlp3s0"
+battery: False
 
 

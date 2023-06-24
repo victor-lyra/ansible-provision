@@ -193,6 +193,7 @@ screens = [
                     font='Hack Nerd Font Bold',
                     fontsize=14
                 ),
+                {% if battery %}
                 widget.Battery(
                     update_interval=10,
                     show_short_text=False,
@@ -208,7 +209,8 @@ screens = [
                     padding = 5,
                     font='Hack Nerd Font Bold',
                     fontsize=14
-                ),                
+                ),           
+                {% endif %}     
                 widget.CurrentLayoutIcon(
                     custom_icon_paths = [os.path.expanduser("~/.config/qtile/icon")],
                     #foreground = colors[2],
@@ -372,6 +374,7 @@ screens = [
                     font='Hack Nerd Font Bold',
                     fontsize=14
                 ),
+                {% if battery %}
                 widget.Battery(
                     update_interval=10,
                     show_short_text=False,
@@ -388,7 +391,7 @@ screens = [
                     font='Hack Nerd Font Bold',
                     fontsize=14
                 ),
-
+                {% endif %}
                 widget.CurrentLayoutIcon(
                     custom_icon_paths = [os.path.expanduser("~/.config/qtile/icon")],
                     #foreground = colors[2],

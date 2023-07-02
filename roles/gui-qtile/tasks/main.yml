@@ -10,10 +10,10 @@
       - qtile
       - qtile-extras
 
-# https://copr.fedorainfracloud.org/coprs/jstanek/ports/
+# https://copr.fedorainfracloud.org/coprs/rubemlrm/i3lock-color/
 - name: gui-qtile | i3lock-color | Habilita repositório 'copr'
   community.general.copr:
-    name: jstanek/ports
+    name: rubemlrm/i3lock-color
 
 # https://github.com/Raymo111/i3lock-color
 - name: gui-qtile | qtile | Instala pacote
@@ -24,7 +24,7 @@
 
 - name: gui-qtile | i3lock-color | Remove repositório 'copr'
   community.general.copr:
-    name: jstanek/ports
+    name: rubemlrm/i3lock-color
     state: absent
 
 - name: gui-qtile | betterlockscreen | Verifica se instalado
